@@ -440,7 +440,7 @@ For future analyses, an in-depth breakdown of the most common types of complex e
 
 *What are the spatial patterns in fertility rates and education levels by country from 1980 to 2010?*
 
-To create maps exploring spatial and temporal trends for both total fertility rates and secondary school enrollment rates in Southeast Asia from 1980 to 2010, the dataframe used for exploratory analysis and linear models was separated into three dataframes, one for each decade. Each of these were merged with a shapefile from Esri that contained information on country geometry and projections for mapping. Secondary school enrollment rates and total fertility rates were visualized as  choropleth maps separately by decade. Generally, countries with high fertility rates had lower secondary school enrollment rates, and over time, secondary school enrollment rates increased while total fertility rates decreased over the course of the three decades.
+To create maps exploring spatial and temporal trends for both total fertility rates and secondary school enrollment rates in Southeast Asia from 1980 to 2010, the dataframe used for exploratory analysis and linear models was separated into three dataframes, one for each decade. Each of these were merged with a shapefile from Esri that contained information on country geometry and projections for mapping. Total fertility rates were visualized as choropleth maps separately by decade (hover for school enrollment rates). Generally, countries with high fertility rates had lower secondary school enrollment rates, and over time, secondary school enrollment rates increased while total fertility rates decreased over the course of the three decades.
 
 ```{r cleaning, message = FALSE, echo = FALSE, warning = FALSE}
 se_asia_df = 
@@ -562,70 +562,6 @@ Mean Secondary School Enrollment Rate: ", mean_edu,"%"),
 
 ```
 
-### Secondary School Enrollment
-These are the maps for average secondary school enrollment for three decades: the 1980s, the 1990s, and the 2000s.
-
-#### 1980s
-
-```{r mapping, message = FALSE, echo = FALSE, warning = FALSE}
-plot_mapbox(
-  sf_80,
-  split = ~CNTRY_NAME,
-  color = ~mean_edu,
-  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
-  stroke = I("black"),
-  text = ~paste(CNTRY_NAME, "
-Mean Secondary School Enrollment Rate: ", mean_edu, "
-Average Total Fertility Rate: ", mean_tfr), 
-  hoverinfo = "text",
-  hoveron = "fill") %>% 
-  colorbar(title = "Secondary School Enrollment Rate") %>%
-  layout(
-    mapbox = list(
-      style = 'light'))
-
-```
-
-#### 1990s
-
-
-```{r message = FALSE, echo = FALSE, warning = FALSE}
-plot_mapbox(
-  sf_90,
-  split = ~CNTRY_NAME,
-  color = ~mean_edu,
-  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
-  stroke = I("black"),
-  text = ~paste(CNTRY_NAME, "
-Mean Secondary School Enrollment Rate: ", mean_edu, "
-Average Total Fertility Rate: ", mean_tfr), 
-  hoverinfo = "text",
-  hoveron = "fill") %>% 
-  colorbar(title = "Secondary School Enrollment Rate") %>%
-  layout(
-    mapbox = list(
-      style = 'light'))
-```
-
-#### 2000s 
-
-```{r message = FALSE, echo = FALSE, warning = FALSE}
-plot_mapbox(
-  sf_00,
-  split = ~CNTRY_NAME,
-  color = ~mean_edu,
-  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
-  stroke = I("black"),
-  text = ~paste(CNTRY_NAME, "
-Mean Secondary School Enrollment Rate: ", mean_edu, "
-Average Total Fertility Rate: ", mean_tfr), 
-  hoverinfo = "text",
-  hoveron = "fill") %>% 
-  colorbar(title = "Secondary School Enrollment Rate") %>%
-  layout(
-    mapbox = list(
-      style = 'light'))
-```
 
  &nbsp;  
  
