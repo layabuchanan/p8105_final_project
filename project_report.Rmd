@@ -495,7 +495,7 @@ Sys.setenv('MAPBOX_TOKEN' =  'pk.eyJ1IjoibGF5YWJ1Y2hhbmFuIiwiYSI6ImNraHhqbzB6ZjA
 
 
 
-### Total Fertility Rates
+#### Total Fertility Rates
 These are the maps for average total fertility rates for three decades: the 1980s, the 1990s, and the 2000s.
 
 #### 1980s
