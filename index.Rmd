@@ -30,7 +30,7 @@ In the *exploratory analyses* tab, you will find plots describing changes in fer
 
 In the *spatial patterns* tab, you will find maps detailing total fertility rates and secondary school enrollment for each country by decade. 
 
-In the *formal analysis* tab, you will find a linear model describing the effects of education rates and complex emergencies on fertility indicators. 
+In the *linear models* tab, you will find a linear model describing the effects of education rates and complex emergencies on fertility indicators. 
 
 You can find our written report [here](project_report.html). You can find the screencast of our project [here](https://www.youtube.com/watch?v=jx8xVy4DKI4&feature=youtu.be).
 

@@ -22,8 +22,19 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -295,7 +306,7 @@ $(document).ready(function () {
   </a>
 </li>
 <li>
-  <a href="http:/github.com/nikhitadamaraju/p8105_final_project">
+  <a href="https://github.com/layabuchanan/p8105_final_project.git">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -330,7 +341,7 @@ $(document).ready(function () {
 <p>On this website, you will find explorations and analyses from data obtained through the <a href="https://datatopics.worldbank.org/education/">World Bank</a>, <a href="https://reliefweb.int/disasters">ReliefWeb</a>, and the <a href="http://ghdx.healthdata.org/record/ihme-data/gbd-2019-fertility-estimates-1950-2019">Global Health Data Exchange</a>.</p>
 <p>In the <em>exploratory analyses</em> tab, you will find plots describing changes in fertility indicators over time, education rates over time, and types of complex emergencies by country.</p>
 <p>In the <em>spatial patterns</em> tab, you will find maps detailing total fertility rates and secondary school enrollment for each country by decade.</p>
-<p>In the <em>formal analysis</em> tab, you will find a linear model describing the effects of education rates and complex emergencies on fertility indicators.</p>
+<p>In the <em>linear models</em> tab, you will find a linear model describing the effects of education rates and complex emergencies on fertility indicators.</p>
 <p>You can find our written report <a href="project_report.html">here</a>. You can find the screencast of our project <a href="https://www.youtube.com/watch?v=jx8xVy4DKI4&amp;feature=youtu.be">here</a>.</p>
 </div>
 
@@ -343,7 +354,7 @@ $(document).ready(function () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
