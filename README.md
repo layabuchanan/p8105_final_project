@@ -1,6 +1,6 @@
 # p8105_final_project
 
-This is the repository for the final project titled 'Trends in Maternal Health Indicators Over Time in Southeast Asia Stratified by Complex Emergencies and Education'. The website is hosted at https://nikhitadamaraju.github.io/p8105_final_project/
+This is the repository for the final project titled 'Trends in Maternal Health Indicators Over Time in Southeast Asia Stratified by Complex Emergencies and Education'. The website is hosted at https://github.com/nikhitadamaraju/fertility/
 
 ### Collaborators for this project:
 
