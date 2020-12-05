@@ -1,0 +1,78 @@
+---
+title: "Dashboard 3"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+```
+
+Column {data-width=550}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+
+```
+
+Column {data-width=450}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+## Summary of complex emergencies by country 
+## X = Country, Y = Total Number of complex emergencies
+
+## Set up code
+
+ce_df = read_csv("./datasets/clean_ce_data.csv") %>% 
+  rename(location_name = country) %>% 
+  select(-month, -day) %>% 
+  rename(year_id = year) %>%
+  mutate(location_name = replace(location_name, str_detect(location_name, "Lao"), "Lao PDR")) %>% 
+  filter(location_name %in% c("Cambodia", "Indonesia", "Lao PDR", 
+                              "Malaysia", "Myanmar", "Philippines", "Singapore", 
+                              "Thailand", "Viet Nam", "Southeast Asia", "South Asia"))
+
+
+
+ce_df %>% 
+  group_by(location_name) %>% 
+  summarize(
+    total_ce = n()) %>% 
+  mutate(location_name = fct_reorder(location_name, total_ce)) %>% 
+  
+  ## using ggplot
+  # ggplot(aes(x = location_name, y = total_ce, color = location_name)) +
+  #  geom_bar(stat = 'identity')
+  
+  ## using plot_ly
+  plot_ly(y = ~total_ce, x = ~location_name, color = ~location_name,
+          type = "bar", colors = "viridis", showlegend = FALSE) %>% 
+  layout(title = 'Total Number of Complex Emergencies by Country (1980 - 2010)',
+         xaxis = list(title = 'Country'),
+         yaxis = list(title = 'Total Complex Emergencies'), 
+         annotations = list(x = 0.75, y = 1, 
+                            text = "Brunei, Vietnam, Singapore have 0 recorded CEs", 
+                            showarrow = F, xref = 'paper', yref = 'paper', 
+                            xanchor = 'right', yanchor = 'auto', 
+                            xshift = 0, yshift = 0,
+                            font = list(size = 10, color = "black")))
+
+  ## want to include median year of complex emergencies in hover text. will work on that. maybe also most often type of CE
+```
+
+### Chart C
+
+```{r}
+
+```
+

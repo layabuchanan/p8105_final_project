@@ -1,0 +1,262 @@
+year_id,location_name,event,cat_ce
+2010,Philippines, Mt. Bulusan Volcano ,High
+2010,Philippines, Floods and Landslides ,High
+2010,Indonesia, Sumatra Earthquakes and Tsunami ,High
+2010,Indonesia, Mt. Merapi Volcano ,High
+2010,Myanmar, Tropical Cyclone Giri ,Medium
+2010,Indonesia, Mt. Sinabung Volcano ,High
+2010,Malaysia, Floods ,Low
+2010,Philippines, Tropical Storm Dianmu ,High
+2010,Thailand, Floods ,Medium
+2010,Myanmar, Floods and Landslides ,Medium
+2010,Indonesia, Papua ,High
+2010,Philippines, Floods and Landslides ,High
+2010,Indonesia, Floods ,High
+2010,Indonesia, Earthquakes ,High
+2010,Philippines, Landslide ,High
+2009,Philippines, Mayon Volcano ,High
+2009,Malaysia, Floods ,Low
+2009,Indonesia, Floods and Landslides ,High
+2009,Thailand, Floods ,Medium
+2009,Philippines, Floods and Landslides ,High
+2009,Philippines, Typhoon Lupit ,High
+2009,Indonesia, Sumatra Earthquake ,High
+2009,Myanmar, Earthquake ,Medium
+2009,Philippines, Flash Floods ,High
+2009,Philippines, Earthquake ,High
+2009,Indonesia, Flash Floods ,High
+2009,Indonesia, Earthquake ,High
+2009,Philippines, Tropical Cyclone Molave ,High
+2009,Philippines, Tropical Storm Soudelor ,High
+2009,Myanmar, Floods and Landslides ,Medium
+2009,Philippines, Tropical Storm Feria ,High
+2009,Thailand, Floods and Flash Floods ,Medium
+2009,Philippines, Floods and Landslides ,High
+2009,Philippines, Typhoon Chan,High
+2009,Philippines, Typhoon Dante (Kujira) ,High
+2009,Indonesia, Flash Floods ,High
+2009,Indonesia, Earthquake in North Sulawesi ,High
+2009,Thailand, Drought ,Medium
+2009,Philippines, Floods and Landslides ,High
+2009,Indonesia, Earthquake ,High
+2009,Philippines, Tropical Depression Auring ,High
+2008,Philippines, Landslides ,High
+2008,Thailand, Floods ,Medium
+2008,Thailand, Cold Wave ,Medium
+2008,Malaysia, Floods and Landslides ,Low
+2008,Philippines, Flash Floods ,High
+2008,Indonesia, Earthquake ,High
+2008,Indonesia, Landslide ,High
+2008,Indonesia, Floods ,High
+2008,Philippines, Floods and Landslides ,High
+2008,Philippines, Ferry Disaster/Toxic Cargo ,High
+2008,Philippines, Flash Floods ,High
+2008,Philippines, Tropical Cyclone Halong ,High
+2008,Philippines, Flash Floods ,High
+2008,Myanmar, Tropical Cyclone Nargis ,Medium
+2008,Indonesia, Earthquake ,High
+2008,Philippines, Floods and Landslides ,High
+2007,Indonesia, Floods and Landslides ,High
+2007,Malaysia, Floods ,Low
+2007,Indonesia, Sumbawa Earthquake ,High
+2007,Philippines, Floods and Landslides ,High
+2007,Thailand, Floods ,Medium
+2007,Indonesia, Mt. Kelud Volcano ,High
+2007,Philippines, Mudslide ,High
+2007,Indonesia, Earthquake ,High
+2007,Indonesia, Volcano Karangetang ,High
+2007,Philippines, Floods and Landslides ,High
+2007,Indonesia, Floods and Landslides ,High
+2007,Indonesia, Volcanic Eruption Mt. Gamkonora ,High
+2007,Indonesia, Earthquake ,High
+2007,Indonesia, Landslides ,High
+2007,Indonesia, Floods ,High
+2007,Indonesia, Northern Molucca Sea Earthquake ,High
+2007,Philippines, Floods and Landslides ,High
+2006,Indonesia, Floods ,High
+2006,Malaysia, Floods ,Low
+2006,Indonesia, Aceh Earthquake ,High
+2006,Indonesia, North and West Sumatra Earthquake ,High
+2006,Indonesia, Landslide ,High
+2006,Philippines, Typhoon Utor ,High
+2006,Indonesia, Sidoarjo mudflow and gas pipe explosion ,High
+2006,Cambodia, Floods ,Low
+2006,Philippines, Guimaras Oil Spill – Aug 2006,High
+2006,Thailand, Floods ,Medium
+2006,Indonesia, Fires and Haze ,High
+2006,Philippines, Mount Mayon Volcano ,High
+2006,Indonesia, West Java Earthquake and Tsunami ,High
+2006,Indonesia, Flash Floods and Landslides ,High
+2006,Indonesia, Earthquake ,High
+2006,Thailand, Floods ,Medium
+2006,Myanmar, Cyclone Mala ,Medium
+2006,Indonesia, Flash Floods and Landslides ,High
+2006,Indonesia, Mt. Merapi Volcano ,High
+2006,Indonesia, Earthquake ,High
+2006,Indonesia, Floods and Landslides ,High
+2006,Philippines, Floods and Landslides ,High
+2006,Indonesia, Flash Floods and Landslides ,High
+2005,Thailand, Floods ,Medium
+2005,Philippines, Landslides and Floods ,High
+2005,Indonesia, Landslides ,High
+2005,Myanmar, Floods ,Medium
+2005,Indonesia, Landslide ,High
+2005,Thailand, Floods ,Medium
+2005,Indonesia, Fires ,High
+2005,Indonesia, Flash Floods ,High
+2005,Indonesia, Mentawai Earthquake ,High
+2005,Indonesia, Earthquake ,High
+2005,Indonesia, Sulawesi Earthquake ,High
+2004,Indonesia, Papua Earthquake ,High
+2004,Indonesia, Alor Earthquake ,High
+2004,Indonesia, Volcanic Eruption Mt. Egon ,High
+2004,Indonesia, Volcanic Activity Mt. Awu ,High
+2004,Myanmar, Storm ,Medium
+2004,Indonesia, Earthquake ,High
+2004,Indonesia, Volcano Mt. Egon ,High
+2004,Philippines, Tidal Waves ,High
+2004,Indonesia, Earthquake ,High
+2003,Philippines, Landslides and Floods ,High
+2003,Indonesia, Floods ,High
+2003,Philippines, Tropical Storm Soudelor ,High
+2003,Philippines, Tropical Storm Linfa ,High
+2003,Indonesia, Landslides ,High
+2003,Indonesia, Landslides ,High
+2002,Indonesia, Floods ,High
+2002,Indonesia, Earthquake ,High
+2002,Thailand, Floods ,Medium
+2002,Lao PDR, Floods ,Low
+2002,Myanmar, Floods ,Medium
+2002,Cambodia, Floods ,Low
+2002,Cambodia, Drought ,Low
+2002,Philippines, Earthquake ,High
+2002,Indonesia, Floods ,High
+2001,Philippines, Typhoon Lingling ,High
+2001,Cambodia, Floods ,Low
+2001,Thailand, Floods ,Medium
+2001,Indonesia, Floods and Landslides ,High
+2001,Philippines, Mt. Mayon Volcanic Eruption ,High
+2001,Indonesia, Earthquake ,High
+2000,Indonesia, Floods ,High
+2000,Lao PDR, Floods ,Low
+2000,Cambodia, Floods ,Low
+2000,Philippines, Tropical Depression Edeng ,High
+2000,Indonesia, Earthquake ,High
+2000,Indonesia, Floods ,High
+2000,Indonesia, Earthquake ,High
+2000,Indonesia, Forest Fires ,High
+2000,Philippines, Volcano ,High
+2000,Philippines, Floods ,High
+1999,Philippines, Earthquake ,High
+1999,Cambodia, Floods ,Low
+1999,Cambodia, Floods ,Low
+1999,Philippines, Floods ,High
+1999,Philippines, Floods ,High
+1999,Thailand, Drought ,Medium
+1998,Philippines, Typhoon Faith ,High
+1998,Indonesia, Earthquake ,High
+1998,Philippines, Floods ,High
+1998,Indonesia, Volcanic Eruption ,High
+1998,Philippines, Forest Fires ,High
+1997,Indonesia, Drought ,High
+1997,Myanmar, Floods ,Medium
+1997,Indonesia, Volcanic Eruptions ,High
+1996,Malaysia, Tropical Storm Greg ,Low
+1996,Cambodia, Floods ,Low
+1996,Lao PDR, Floods ,Low
+1996,Philippines, Typhoon Gloria ,High
+1996,Philippines, Spill of Copper Mine Waste ,High
+1996,Indonesia, Earthquake ,High
+1996,Indonesia, Earthquake ,High
+1995,Philippines, Typhoon Angela ,High
+1995,Thailand, Floods ,Medium
+1995,Philippines, Tropical Storm Zack ,High
+1995,Philippines, Tropical Storm Sybil ,High
+1995,Indonesia, Earthquake ,High
+1995,Myanmar, Floods ,Medium
+1995,Lao PDR, Floods ,Low
+1995,Philippines, Floods ,High
+1995,Indonesia, Earthquake ,High
+1995,Indonesia, Floods ,High
+1995,Myanmar, Fire ,Medium
+1995,Philippines, Earthquake ,High
+1995,Indonesia, Earthquake ,High
+1995,Lao PDR, Cholera Epidemic ,Low
+1994,Indonesia, Volcanic Eruption ,High
+1994,Indonesia, Lahar ,High
+1994,Indonesia, Earthquake ,High
+1994,Indonesia, Earthquake/Tsunami ,High
+1994,Philippines, Typhoon Teresa ,High
+1994,Philippines, Tropical Depression Weling ,High
+1994,Cambodia, Floods ,Low
+1994,Philippines, Typhoons Tim and Vanessa ,High
+1994,Philippines, Tropical Storm Yunya ,High
+1994,Indonesia, Earthquake/Tsunami ,High
+1994,Philippines, Tropical Strom Gading ,High
+1994,Myanmar, Cyclone ,Medium
+1994,Indonesia, East Java Floods ,High
+1994,Philippines, Tropical Storm Owen ,High
+1994,Indonesia, Earthquake ,High
+1994,Indonesia, Earthquake ,High
+1994,Philippines, Tropical Storm Akang ,High
+1993,Malaysia, Floods ,Low
+1993,Philippines, Typhoons Lola and Manny ,High
+1993,Philippines, Typhoon Nell ,High
+1993,Philippines, Typhoon Flo ,High
+1993,Philippines, Floods ,High
+1993,Philippines, Typhoon Koryn ,High
+1993,Indonesia, Floods ,High
+1993,Philippines, Volcanic Eruption ,High
+1992,Indonesia, Earthquake ,High
+1992,Indonesia, Landslides ,High
+1992,Philippines, Taal Volcano Alert ,High
+1991,Philippines, Floods ,High
+1991,Indonesia, Volcanic Eruption ,High
+1991,Philippines, Earthquake ,High
+1991,Cambodia, Flood Emergency ,Low
+1991,Myanmar, Floods ,Medium
+1991,Indonesia, Earthquake ,High
+1991,Indonesia, Earthquake ,High
+1991,Philippines, Mt. Pinatubo Volcano ,High
+1991,Myanmar, Fires ,Medium
+1991,Myanmar, Earthquake ,Medium
+1990,Philippines, Typhoon Mike ,High
+1990,Philippines, Earthquake ,High
+1990,Philippines, Typhoons ,High
+1990,Philippines, Earthquake ,High
+1990,Philippines, Floods ,High
+1990,Indonesia, Earthquake ,High
+1990,Indonesia, Volcanic Eruption ,High
+1990,Philippines, Earthquake ,High
+1990,Indonesia, Floods and Landslides ,High
+1989,Philippines, Typhoon ,High
+1989,Myanmar, Fire ,Medium
+1989,Indonesia, Earthquake ,High
+1989,Philippines, Typhoon ,High
+1989,Myanmar, Fire ,Medium
+1989,Philippines, Floods ,High
+1989,Indonesia, Floods and Landslides ,High
+1988,Philippines, Typhoon ,High
+1988,Thailand, Floods and Mudslides ,Medium
+1988,Myanmar, Fire ,Medium
+1987,Indonesia, Earthquake ,High
+1987,Philippines, Typhoon ,High
+1987,Indonesia, Floods ,High
+1987,Indonesia, Heavy Rains/Floods ,High
+1987,Indonesia, Earthquake ,High
+1987,Myanmar, Fire ,Medium
+1986,Philippines, Typhoon ,High
+1986,Philippines, Typhoon ,High
+1986,Myanmar, Fire ,Medium
+1985,Philippines, Typhoon ,High
+1985,Philippines, Typhoon ,High
+1984,Indonesia, Volcanic Eruption ,High
+1984,Philippines, Volcanic Eruption ,High
+1984,Philippines, Typhoons ,High
+1984,Indonesia, Volcanic Eruption ,High
+1984,Indonesia, Earthquake ,High
+1984,Indonesia, Mt. Merapi Volcanic Eruption ,High
+1984,Indonesia, Mt. Soputan Volcanic Eruption ,High
+1984,Myanmar, Fire ,Medium
+1984,Myanmar, Fire ,Medium
+1984,Indonesia, Floods and Landslides ,High

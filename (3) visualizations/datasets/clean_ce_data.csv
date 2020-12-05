@@ -1,0 +1,358 @@
+year,month,day,country,event
+2010,11,06,Philippines, Mt. Bulusan Volcano 
+2010,11,03,Philippines, Floods and Landslides 
+2010,10,26,Indonesia, Sumatra Earthquakes and Tsunami 
+2010,10,26,Indonesia, Mt. Merapi Volcano 
+2010,10,22,Myanmar, Tropical Cyclone Giri 
+2010,10,16,Typhoon Megi ,NA
+2010,10,04,Viet Nam, Floods 
+2010,08,29,Indonesia, Mt. Sinabung Volcano 
+2010,08,25,Typhoon Mindulle ,NA
+2010,08,17,Malaysia, Floods 
+2010,08,09,Philippines, Tropical Storm Dianmu 
+2010,08,03,Thailand, Floods 
+2010,07,19,Typhoon Chanthu ,NA
+2010,07,13,Typhoon Conson ,NA
+2010,06,16,Myanmar, Floods and Landslides 
+2010,06,16,Indonesia, Papua 
+2010,05,28,Philippines, Floods and Landslides 
+2010,05,13,Viet Nam, Floods 
+2010,04,08,Indonesia, Floods 
+2010,04,07,Indonesia, Earthquakes 
+2010,01,01,Philippines, Landslide 
+2009,12,15,Philippines, Mayon Volcano 
+2009,11,23,Malaysia, Floods 
+2009,11,09,Indonesia, Floods and Landslides 
+2009,11,09,Thailand, Floods 
+2009,11,05,Philippines, Floods and Landslides 
+2009,10,31,Typhoon Mirinae ,NA
+2009,10,22,Philippines, Typhoon Lupit 
+2009,10,02,Typhoon Parma ,NA
+2009,09,30,Indonesia, Sumatra Earthquake 
+2009,09,26,Typhoon Ketsana ,NA
+2009,09,22,Myanmar, Earthquake 
+2009,09,21,Philippines, Flash Floods 
+2009,09,19,Philippines, Earthquake 
+2009,09,15,Indonesia, Flash Floods 
+2009,09,13,Typhoon Koppu ,NA
+2009,09,10,Tropical Storm Mujigae ,NA
+2009,09,02,Indonesia, Earthquake 
+2009,08,07,Typhoon Morakot ,NA
+2009,07,17,Philippines, Tropical Cyclone Molave 
+2009,07,10,Philippines, Tropical Storm Soudelor 
+2009,07,05,Viet Nam, Floods and Landslides 
+2009,07,04,Myanmar, Floods and Landslides 
+2009,06,23,Philippines, Tropical Storm Feria 
+2009,05,27,Thailand, Floods and Flash Floods 
+2009,05,18,Philippines, Floods and Landslides 
+2009,05,08,Philippines, Typhoon Chan
+2009,05,02,Philippines, Typhoon Dante (Kujira) 
+2009,04,24,Influenza A (H1N1) Pandemic ,NA
+2009,03,27,Indonesia, Flash Floods 
+2009,02,11,Indonesia, Earthquake in North Sulawesi 
+2009,01,27,Thailand, Drought 
+2009,01,10,Philippines, Floods and Landslides 
+2009,01,04,Indonesia, Earthquake 
+2009,01,03,Philippines, Tropical Depression Auring 
+2008,12,27,Philippines, Landslides 
+2008,12,25,Thailand, Floods 
+2008,12,12,Thailand, Cold Wave 
+2008,12,06,Malaysia, Floods and Landslides 
+2008,11,21,Philippines, Flash Floods 
+2008,11,18,Viet Nam, Tropical Storm Noul 
+2008,11,16,Indonesia, Earthquake 
+2008,11,14,Indonesia, Landslide 
+2008,11,08,Tropical Storm Maysak ,NA
+2008,10,27,Indonesia, Floods 
+2008,10,20,Viet Nam, Floods 
+2008,10,01,Tropical Storm Higos ,NA
+2008,09,29,Typhoon Mekkhala ,NA
+2008,09,21,Typhoon Hagupit ,NA
+2008,09,14,Typhoon Sinlaku ,NA
+2008,09,08,Philippines, Floods and Landslides 
+2008,08,19,Typhoon Nuri ,NA
+2008,08,06,Tropical Storm Kammuri ,NA
+2008,07,27,Typhoon Fung,NA
+2008,07,16,Typhoon Kalmaegi ,NA
+2008,07,15,Philippines, Ferry Disaster/Toxic Cargo 
+2008,06,20,South East Asia, Typhoon Fengshen 
+2008,06,06,Philippines, Flash Floods 
+2008,05,18,Philippines, Tropical Cyclone Halong 
+2008,05,15,Philippines, Flash Floods 
+2008,05,02,Myanmar, Tropical Cyclone Nargis 
+2008,05,01,Southeast Asia, Floods 
+2008,02,20,Indonesia, Earthquake 
+2008,02,19,Philippines, Floods and Landslides 
+2007,12,26,Indonesia, Floods and Landslides 
+2007,12,10,Malaysia, Floods 
+2007,11,26,Indonesia, Sumbawa Earthquake 
+2007,11,20,Philippines, Floods and Landslides 
+2007,11,09,Thailand, Floods 
+2007,10,17,Indonesia, Mt. Kelud Volcano 
+2007,10,16,Philippines, Mudslide 
+2007,09,29,Typhoon Lekima ,NA
+2007,09,12,Indonesia, Earthquake 
+2007,08,20,Indonesia, Volcano Karangetang 
+2007,08,20,Typhoon Sepat ,NA
+2007,08,08,Philippines, Floods and Landslides 
+2007,08,06,Viet Nam, Floods 
+2007,07,23,Indonesia, Floods and Landslides 
+2007,07,09,Indonesia, Volcanic Eruption Mt. Gamkonora 
+2007,06,19,South Asia, Floods 
+2007,06,11,Bangladesh/Myanmar, Floods and Landslides 
+2007,05,15,Bangladesh, Cyclone 
+2007,03,06,Indonesia, Earthquake 
+2007,03,03,Indonesia, Landslides 
+2007,02,03,Indonesia, Floods 
+2007,01,21,Indonesia, Northern Molucca Sea Earthquake 
+2007,01,03,Philippines, Floods and Landslides 
+2006,12,24,Indonesia, Floods 
+2006,12,20,Malaysia, Floods 
+2006,12,18,Indonesia, Aceh Earthquake 
+2006,12,18,Indonesia, North and West Sumatra Earthquake 
+2006,12,15,Indonesia, Landslide 
+2006,12,09,Philippines, Typhoon Utor 
+2006,12,01,Southeast Asia, Typhoon Durian 
+2006,11,23,Indonesia, Sidoarjo mudflow and gas pipe explosion 
+2006,11,12,Southeast Asia, Typhoon Chebi 
+2006,10,30,Southeast Asia, Typhoon Cimaron 
+2006,09,28,Southeast Asia, Typhoon Xangsane 
+2006,08,29,Cambodia, Floods 
+2006,08,28,Philippines, Guimaras Oil Spill – Aug 2006
+2006,08,25,Thailand, Floods 
+2006,08,25,Indonesia, Fires and Haze 
+2006,08,14,Philippines, Mount Mayon Volcano 
+2006,07,17,Indonesia, West Java Earthquake and Tsunami 
+2006,06,21,Indonesia, Flash Floods and Landslides 
+2006,05,27,Indonesia, Earthquake 
+2006,05,24,Thailand, Floods 
+2006,05,13,Typhoon Chanchu ,NA
+2006,05,04,Myanmar, Cyclone Mala 
+2006,04,21,Indonesia, Flash Floods and Landslides 
+2006,04,19,Indonesia, Mt. Merapi Volcano 
+2006,03,16,Indonesia, Earthquake 
+2006,02,23,Indonesia, Floods and Landslides 
+2006,02,14,Philippines, Floods and Landslides 
+2006,01,04,Indonesia, Flash Floods and Landslides 
+2005,12,27,Thailand, Floods 
+2005,12,08,Philippines, Landslides and Floods 
+2005,10,27,Viet Nam, Floods 
+2005,10,19,Indonesia, Landslides 
+2005,09,21,Typhoon Damrey ,NA
+2005,09,14,Myanmar, Floods 
+2005,09,05,Indonesia, Landslide 
+2005,08,31,Thailand, Floods 
+2005,08,16,Indonesia, Fires 
+2005,04,26,Indonesia, Flash Floods 
+2005,04,10,Indonesia, Mentawai Earthquake 
+2005,03,28,Indonesia, Earthquake 
+2005,01,24,Indonesia, Sulawesi Earthquake 
+2004,12,26,South Asia, Earthquake and Tsunami 
+2004,11,26,Indonesia, Papua Earthquake 
+2004,11,25,Southeast Asia, Typhoons and Tropical Storm 
+2004,11,15,Indonesia, Alor Earthquake 
+2004,09,04,Indonesia, Volcanic Eruption Mt. Egon 
+2004,08,26,East and South Asia, Typhoon Aere and Typhoon Chaba 
+2004,07,23,Viet Nam, Floods 
+2004,06,08,Indonesia, Volcanic Activity Mt. Awu 
+2004,05,27,Myanmar, Storm 
+2004,02,06,Indonesia, Earthquake 
+2004,01,31,Indonesia, Volcano Mt. Egon 
+2004,01,27,Philippines, Tidal Waves 
+2004,01,05,Indonesia, Earthquake 
+2003,12,21,Philippines, Landslides and Floods 
+2003,11,04,Indonesia, Floods 
+2003,10,21,Viet Nam, Floods 
+2003,07,24,Typhoon Imbudo ,NA
+2003,06,18,Philippines, Tropical Storm Soudelor 
+2003,05,30,Philippines, Tropical Storm Linfa 
+2003,04,03,Indonesia, Landslides 
+2003,01,30,Indonesia, Landslides 
+2002,11,27,Indonesia, Floods 
+2002,10,11,Indonesia, Earthquake 
+2002,10,10,Thailand, Floods 
+2002,08,30,Lao PDR, Floods 
+2002,08,22,Myanmar, Floods 
+2002,08,20,Cambodia, Floods 
+2002,08,20,Viet Nam, Floods 
+2002,08,09,Cambodia, Drought 
+2002,07,04,Tropical Storm Chata'an ,NA
+2002,04,09,Viet Nam, Forest Fire 
+2002,03,06,Philippines, Earthquake 
+2002,02,01,Indonesia, Floods 
+2001,11,13,Viet Nam, Typhoon 
+2001,11,08,Philippines, Typhoon Lingling 
+2001,09,28,Viet Nam, Floods 
+2001,08,30,Cambodia, Floods 
+2001,08,14,Thailand, Floods 
+2001,08,01,Indonesia, Floods and Landslides 
+2001,07,06,Typhoon Utor ,NA
+2001,06,26,East Timor, Floods 
+2001,06,25,Philippines, Mt. Mayon Volcanic Eruption 
+2001,02,14,Indonesia, Earthquake 
+2000,11,24,Indonesia, Floods 
+2000,09,29,Lao People's Democratic Republic, Floods 
+2000,09,13,Viet Nam, Floods 
+2000,08,11,Cambodia, Floods 
+2000,07,07,Philippines, Tropical Depression Edeng 
+2000,06,05,Indonesia, Earthquake 
+2000,05,18,Indonesia, Floods 
+2000,05,05,Indonesia, Earthquake 
+2000,03,14,Indonesia, Forest Fires 
+2000,02,24,Philippines, Volcano 
+2000,02,08,Philippines, Floods 
+1999,12,12,Philippines, Earthquake 
+1999,12,07,Viet Nam, Floods 
+1999,11,11,Cambodia, Floods 
+1999,11,05,Viet Nam, Floods 
+1999,08,12,Cambodia, Floods 
+1999,08,05,Philippines, Floods 
+1999,08,04,Viet Nam, Floods 
+1999,03,15,Viet Nam, Drought 
+1999,02,26,Philippines, Floods 
+1999,02,06,Thailand, Drought 
+1998,12,17,Philippines, Typhoon Faith 
+1998,11,30,Indonesia, Earthquake 
+1998,11,24,Viet Nam, Typhoon Dawn 
+1998,11,06,Viet Nam, Floods 
+1998,09,24,Philippines, Floods 
+1998,08,14,Viet Nam, Drought 
+1998,07,15,Indonesia, Volcanic Eruption 
+1998,04,01,Philippines, Forest Fires 
+1997,11,01,Viet Nam, Typhoon Linda 
+1997,09,01,Indonesia, Drought 
+1997,09,01,Southeast Asia, Environmental Emergency 
+1997,08,01,Myanmar, Floods 
+1997,08,01,Typhoon Winnie ,NA
+1997,01,01,Indonesia, Volcanic Eruptions 
+1996,12,01,Malaysia, Tropical Storm Greg 
+1996,10,01,Viet Nam, Floods 
+1996,09,01,Cambodia, Floods 
+1996,08,01,Lao PDR, Floods 
+1996,07,01,Philippines, Typhoon Gloria 
+1996,07,01,Viet Nam, Typhoon Frankie 
+1996,04,01,Philippines, Spill of Copper Mine Waste 
+1996,02,01,Indonesia, Earthquake 
+1996,01,01,Indonesia, Earthquake 
+1995,11,06,Viet Nam, Typhoon 
+1995,11,01,Philippines, Typhoon Angela 
+1995,10,13,Viet Nam, Floods 
+1995,10,01,Thailand, Floods 
+1995,10,01,Philippines, Tropical Storm Zack 
+1995,10,01,Philippines, Tropical Storm Sybil 
+1995,10,01,Indonesia, Earthquake 
+1995,09,01,Myanmar, Floods 
+1995,09,01,Lao PDR, Floods 
+1995,09,01,Philippines, Floods 
+1995,07,01,Myanmar/China/Thailand, Earthquake 
+1995,05,01,Indonesia, Earthquake 
+1995,05,01,Indonesia, Floods 
+1995,04,01,Myanmar, Fire 
+1995,04,01,Philippines, Earthquake 
+1995,03,20,Indonesia, Earthquake 
+1995,02,01,Lao PDR, Cholera Epidemic 
+1994,11,23,Indonesia, Volcanic Eruption 
+1994,11,09,Indonesia, Lahar 
+1994,11,01,Philippine, Earthquake 
+1994,10,31,Indonesia, Earthquake 
+1994,10,10,Indonesia, Earthquake/Tsunami 
+1994,10,01,Viet Nam, Floods 
+1994,10,01,Philippines, Typhoon Teresa 
+1994,09,01,Philippines, Tropical Depression Weling 
+1994,09,01,Philippine, Lahar 
+1994,08,01,Cambodia, Floods 
+1994,07,01,Philippines, Typhoons Tim and Vanessa 
+1994,07,01,Philippines, Tropical Storm Yunya 
+1994,06,04,Indonesia, Earthquake/Tsunami 
+1994,06,01,Philippines, Tropical Strom Gading 
+1994,05,06,Myanmar, Cyclone 
+1994,04,25,Indonesia, East Java Floods 
+1994,04,01,Philippines, Tropical Storm Owen 
+1994,02,16,Indonesia, Earthquake 
+1994,01,19,Indonesia, Earthquake 
+1994,01,01,Philippines, Tropical Storm Akang 
+1993,12,01,Malaysia, Floods 
+1993,12,01,Viet Nam, Typhoon Lola 
+1993,12,01,Philippines, Typhoons Lola and Manny 
+1993,12,01,Philippines, Typhoon Nell 
+1993,11,30,Viet Nam, Typhoon 
+1993,10,01,Philippines, Typhoon Flo 
+1993,08,01,Philippines, Floods 
+1993,06,01,Philippines, Typhoon Koryn 
+1993,02,02,Indonesia, Floods 
+1993,02,01,Philippines, Volcanic Eruption 
+1992,12,12,Indonesia, Earthquake 
+1992,10,13,Indonesia, Landslides 
+1992,10,01,Viet Nam, Floods 
+1992,10,01,Viet Nam, Typhoon Angela 
+1992,07,01,Viet Nam, Typhoon Chuck 
+1992,02,01,Philippines, Taal Volcano Alert 
+1991,11,01,Philippines, Floods 
+1991,11,01,Indonesia, Volcanic Eruption 
+1991,11,01,Philippines, Earthquake 
+1991,10,01,West Pacific Ocean, Typhoon Ruth 
+1991,09,01,Viet Nam, Floods Mekong 
+1991,08,01,Cambodia, Flood Emergency 
+1991,08,01,Viet Nam, Typhoon Fred 
+1991,07,26,Myanmar, Floods 
+1991,07,01,Indonesia, Earthquake 
+1991,06,20,Indonesia, Earthquake 
+1991,06,01,Philippines, Mt. Pinatubo Volcano 
+1991,04,11,Myanmar, Fires 
+1991,01,07,Myanmar, Earthquake 
+1991,01,01,Viet Nam, Storm 
+1990,11,01,Philippines, Typhoon Mike 
+1990,09,01,Viet Nam, Typhoon Becky 
+1990,07,01,Philippines, Earthquake 
+1990,07,01,Viet Nam, Floods 
+1990,06,25,Philippines, Typhoons 
+1990,06,15,Philippines, Earthquake 
+1990,06,15,Philippines, Floods 
+1990,04,19,Indonesia, Earthquake 
+1990,02,15,Indonesia, Volcanic Eruption 
+1990,02,09,Philippines, Earthquake 
+1990,02,02,Indonesia, Floods and Landslides 
+1989,11,22,Philippines, Typhoon 
+1989,11,01,Typhoon Gay ,NA
+1989,10,19,Typhoon Elsie ,NA
+1989,10,01,"Typhoons Brian, Angela and Dan ",NA
+1989,09,05,Typhoon Sarah ,NA
+1989,08,11,Myanmar, Fire 
+1989,08,04,Indonesia, Earthquake 
+1989,08,01,Viet Nam, Typhoon Irving 
+1989,07,18,Philippines, Typhoon 
+1989,05,01,Viet Nam, Cyclone Cecil 
+1989,02,24,Myanmar, Fire 
+1989,02,06,Philippines, Floods 
+1989,01,27,Indonesia, Floods and Landslides 
+1988,11,09,Philippines, Typhoon 
+1988,11,01,Thailand, Floods and Mudslides 
+1988,10,24,Typhoon Ruby ,NA
+1988,03,24,Myanmar, Fire 
+1987,12,02,Indonesia, Earthquake 
+1987,11,28,Philippines, Typhoon 
+1987,11,04,Indonesia, Floods 
+1987,11,01,Viet Nam, Typhoon Maury 
+1987,08,14,Typhoon Betty ,NA
+1987,05,19,Indonesia, Heavy Rains/Floods 
+1987,04,30,Indonesia, Earthquake 
+1987,01,29,Myanmar, Fire 
+1986,10,07,Philippines, Typhoon 
+1986,08,20,Typhoon Vera ,NA
+1986,08,16,Typhoon Wayne ,NA
+1986,07,11,Philippines, Typhoon 
+1986,03,07,Myanmar, Fire 
+1985,10,22,Philippines, Typhoon 
+1985,10,01,Typhoon Cecil ,NA
+1985,06,26,Philippines, Typhoon 
+1984,11,20,Indonesia, Volcanic Eruption 
+1984,11,01,Typhoon Agnes ,NA
+1984,09,14,Philippines, Volcanic Eruption 
+1984,09,13,Philippines, Typhoons 
+1984,09,10,Indonesia, Volcanic Eruption 
+1984,08,30,Indonesia, Earthquake 
+1984,06,18,Indonesia, Mt. Merapi Volcanic Eruption 
+1984,05,28,Indonesia, Mt. Soputan Volcanic Eruption 
+1984,04,13,Myanmar, Fire 
+1984,03,27,Myanmar, Fire 
+1984,03,01,Indonesia, Floods and Landslides 

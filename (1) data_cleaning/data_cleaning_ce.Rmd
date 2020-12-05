@@ -1,0 +1,114 @@
+---
+title: "Data Cleaing: Complex Emergencies"
+output: github_document
+---
+
+The following settings and libraries will be used throughout. 
+
+```{r settings, message = FALSE}
+library(tidyverse)
+library(rvest)
+library(httr)
+library(readxl)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis", 
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+# Setting working directory to cleaning 
+#setwd('./(1) data_cleaning/')
+```
+
+### Pulling data from the API key
+
+```{r message=FALSE, warning=FALSE}
+rweb = 
+  GET("https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=list&preset=latest&slim=1&query[value]=country.id%3A(120%20OR%20228%20OR%20251%20OR%2044%20OR%2048%20OR%20135%20OR%20147%20OR%20165%20OR%20188%20OR%20212)%20AND%20date.created%3A%5B1980-01-01%20TO%202011-01-01%7D&query[operator]=AND&limit=500") %>% 
+   content("text") %>% 
+    jsonlite::fromJSON() %>% 
+    as_tibble()
+```
+
+Api at this [link](https://reliefweb.github.io/search-converter/?appname=rwint-user-0&search-url=https%3A//reliefweb.int/disasters%3Fadvanced-search%3D%2528C120.C228.C251.C44.C48.C135.C147.C165.C188.C212%2529_%2528DA19900101-20101231%2529)
+
+10 Countries ― Brunei Darussalam, Cambodia, Indonesia, Laos, Malaysia, Myanmar, Philippines, Singapore, Thailand, and Vietnam. 
+
+Country list from ASSOCIATION OF SOUTHEAST ASIAN NATIONS (ASEAN)
+
+Total: 261 Complex Emergencies
+
+
+### Excel File & Data Cleaning
+
+The variable names in the JSON tibble were difficult so I just copied and pasted it into an excel doc and imported it. 
+
+```{r}
+## JSON was difficult to manage, copied the data and imported as an excel file
+ce_df = read_xlsx("./datasets/ce_data.xlsx")
+
+## Creating appropriate variables and columns
+ce_df = 
+ce_df %>% 
+  drop_na() %>% 
+  
+  # Create appropriate date columns
+  separate(date, into = c("year_id", "x"), sep = 4) %>% 
+  select(-x) %>% 
+  
+  # Create country column
+  separate(name, into = c("location_name", "event"), sep = ":") %>% 
+  
+  #removing extra month info in description
+  separate(event, into = c("event", "r"), sep = "-") %>% 
+  separate(location_name, into = c("location_name", "s"), sep = "-" ) %>% 
+  select(-r, -s) %>% 
+  
+  # Renaming various Lao country names to Lao PDR
+  mutate(location_name = replace(location_name, str_detect(location_name, "Lao"), "Lao PDR")) %>%
+  
+  # Filtering only by events located within a specific country (to remove regional typhoons)
+  filter(location_name %in% c("Cambodia", "Indonesia", "Lao PDR", 
+                              "Malaysia", "Myanmar", "Philippines", "Singapore", 
+                              "Thailand", "Viet Nam", "Southeast Asia", "South Asia")) %>% 
+  
+  # Creating a categorical level variable for total number of CEs
+  mutate(
+    cat_ce = case_when(
+      location_name %in% c("Brunei Darussalam", "Viet Nam", "Singapore") ~ "None",
+      location_name %in% c("Lao PDR", "Malaysia", "Cambodia") ~ "Low",
+      location_name %in% c("Thailand", "Myanmar") ~ "Medium",
+      location_name %in% c("Philippines", "Indonesia") ~ "High")
+    )
+
+
+#Export
+write_csv(ce_df, "./datasets/clean_ce_data.csv")
+
+
+# Creating a dataset with summed values to determine levels
+ce_sum = 
+  ce_df %>% 
+    group_by(location_name) %>% 
+    summarize(
+      total_ce = n())
+
+
+  
+## Note: No CEs recorded in Brunei, Vietnam, Singapore
+## Categories:
+##    None:Brunei, Vietnam, Singapore [0]
+##    Low: Lao PDR, Malaysia, Cambodia [5-10]
+##    Medium: Thailand, Myanmar [16 - 23]
+##    High: Philippines, Indonesia [92 - 108]
+```
+
+
+
+
+

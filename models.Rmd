@@ -1,0 +1,318 @@
+---
+title: "Models"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r settings, include = FALSE, message = FALSE}
+# The following settings and libraries will be used throughout. 
+
+library(tidyverse)
+library(rvest)
+library(httr)
+library(readxl)
+library(patchwork)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis", 
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+
+```{r read_data, include = FALSE, message = FALSE}
+# Making two dataframes for the 2 linear models
+
+raw_df = read_csv('./datasets/clean_all_merged_data.csv') %>%
+  mutate(cat_ce = as.factor(cat_ce)) 
+
+# Re_ordering factors
+raw_df$cat_ce = factor(raw_df$cat_ce, levels = c("Low", "Medium", "High"))
+
+tfr_df = raw_df %>%
+  filter(
+    location_name != 'Global',
+    measure_name == 'TFR'
+  ) %>%
+  rename(
+    tfr = val
+  ) %>%
+  drop_na(cat_ce, sec_school_enroll)
+
+nrr_df = raw_df %>%
+  filter(
+    location_name != 'Global',
+    measure_name == 'NRR'
+  ) %>%
+  rename(
+    nrr = val
+  ) %>%
+  drop_na(cat_ce, sec_school_enroll)
+```
+
+
+&nbsp;  
+
+
+### Overview 
+
+Fertility rate, an indicator of the number of births per woman, is known to have an inverse relationship with secondary school enrollment. With the global increase in the number of natural disasters and disease outbreaks annually, we would like to explore how this relationship is affected by the complex emergency status. We developed two linear models using each fertility measure - Total Fertility Rate (TFR) and Net Reproduction Rate (NRR) - as an outcome variable. The two covariates, Secondary School Enrollment and Category of Complex Emergencies were used in each model to understand their effect on the outcome variable. Complex emergency status, a categorical variable consisting of three levels (High/Medium/Low) was used to build a nested linear model. Using a two-way ANOVA, the effect of complex emergency status on the linear association between the fertility measure and secondary school enrollment was found to be statistically significant. 
+
+&nbsp;  
+
+### Covariates
+
+Each model consists of two covariates, namely:
+
+* `sec_school_enroll` - Secondary school enrollment, a continuous numeric variable
+* `cat_ce` - Relative category of total complex emergency, a categorical variable consisting of 3 levels (High/Medium/Low)
+
+&nbsp;  
+
+### Primary Analysis
+
+There are two linear models built as a part of this study with two outcome variables - Total Fertility Rate (TFR) and Net Reproduction Rate (NRR). The objective of the regression analysis is to understand the relationship between the covariates and the outcome in each model to draw inferences. Each dataset consists of `r nrow(tfr_df)` rows.
+
+**Distribution of Fertility measure**
+
+From the two histograms shown below, we can observe that both fertility measures are evenly distributed around the mean (blue dotted line) and that they appear to have similar distributions. 
+
+```{r histograms, message = FALSE}
+
+# TFR distribution
+
+tfr_plot = 
+  tfr_df %>%
+  ggplot(aes(x = tfr)) +
+  geom_histogram(aes(y = ..density..), color = "black", fill = "white", bins = 40) +
+  geom_density(alpha = .4, fill = "#FF6666") +
+  geom_vline(aes(xintercept = mean(tfr)), color = 'blue', linetype = "dashed", size = 1) +
+  labs(
+    x = 'TFR (Children per woman)',
+    y = 'Density',
+    title = 'Distribution of Total Fertility Rate'
+  ) +
+  theme_bw()
+
+# NRR distribution
+
+nrr_plot =
+  nrr_df %>%
+  ggplot(aes(x = nrr)) +
+  geom_histogram(aes(y = ..density..), color = "black", fill = "white", bins = 40) +
+  geom_density(alpha = .4, fill = "lightblue") +
+  geom_vline(aes(xintercept = mean(nrr)), color = 'blue', linetype = "dashed", size = 1) +
+  labs(
+    x = 'NRR (Daughters born per woman)',
+    y = 'Density',
+    title = 'Distribution of Net Reproduction Rate'
+  ) +
+  theme_bw()
+
+tfr_plot + nrr_plot
+
+```
+
+**Fertility measure (Y) vs secondary school enrollment (X) based on CE status **
+
+As demonstrated with the charts below, the relationship between fertility estimates does appear to vary with complex emergency status. Points within a CE group appear to follow a continuous pattern.
+
+```{r scatterplot, message = FALSE}
+
+# TFR distribution
+
+tfr_plot = 
+  tfr_df %>%
+  ggplot(aes(x = sec_school_enroll, y = tfr, color = factor(cat_ce))) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F,                                          
+                aes(group = factor(cat_ce),                                  
+                  color = factor(cat_ce))) +   
+  labs(
+    x = 'Seconday school enrollment (%)',
+    y = 'TFR (children per woman)',
+    title = 'TFR vs enrollment by CE status'
+  ) +
+  theme_bw()
+
+# NRR distribution
+
+nrr_plot = 
+  nrr_df %>%
+  ggplot(aes(x = sec_school_enroll, y = nrr, color = factor(cat_ce))) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F,
+              aes(group = factor(cat_ce),
+                  color = factor(cat_ce))) + 
+  labs(
+    x = 'Seconday school enrollment (%)',
+    y = 'NRR (daughters per woman)',
+    title = 'NRR vs enrollment by CE status'
+  ) +
+  theme_bw()
+
+tfr_plot + nrr_plot
+
+
+```
+
+&nbsp;  
+
+### Estimates
+
+To analyze how secondary school enrollment affects a specific fertility measure of interest for a specific category of complex emergency, we created models nested within the category of complex emergency.
+
+&nbsp;  
+
+#### Total Fertility Rate 
+
+```{r, tfr models}
+# Nested model for total fertility rate
+tfr_lm_res =
+  tfr_df %>% 
+  nest(data = -cat_ce) %>%
+  
+  # Mapping the linear models by levels
+  mutate(
+    models = map(data, ~lm(tfr ~ sec_school_enroll, data = .x)),
+    results = map(models, broom::tidy)) %>% 
+  
+  # Organizing results
+  select(-data, -models) %>% 
+  unnest(results) %>% 
+  filter(term == "sec_school_enroll") 
+
+tfr_lm_res %>%
+  arrange(factor(cat_ce)) %>%
+  knitr::kable(digits = 3)
+```
+
+&nbsp;  
+
+#### Net Reproduction Rate
+
+```{r, nrr models}
+# Nested model for net reproduction rate
+nrr_lm_res =
+  nrr_df %>% 
+  nest(data = -cat_ce) %>% 
+  
+  # Mapping the linear model by levels
+  mutate(
+    models = map(data, ~lm(nrr ~ sec_school_enroll, data = .x)),
+    results = map(models, broom::tidy)) %>% 
+  
+  # Organizing results
+  select(-data, -models) %>% 
+  unnest(results) %>%
+  filter(term == "sec_school_enroll")
+
+nrr_lm_res %>%
+  arrange(factor(cat_ce)) %>%
+  knitr::kable(digits = 3)
+```
+
+Within a category of complex emergency, there is a decreasing relationship between school enrollment and fertility estimate for `Low` and `Medium` categories. However, the relationship is increasing in the case of `High` category.
+
+&nbsp;  
+
+### Hypotheses
+
+**Association between secondary school enrollment and fertility measure**
+
+*Null hypothesis:* Secondary school enrollment is not linearly associated with the respective fertility estimate
+
+*Alternate hypothesis:* Secondary school enrollment is significantly linearly associated with the respective fertility estimate
+
+&nbsp;  
+
+#### Total Fertility Rate 
+
+```{r, tfr lm}
+lm(tfr ~ sec_school_enroll,data = tfr_df) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+At a 5% significance level, there is a significant linear association between both total fertility rate and secondary school enrollment
+
+&nbsp;  
+
+
+#### Net Reproduction Rate
+
+```{r, nr lm}
+lm(nrr ~ sec_school_enroll,data = nrr_df) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+At a 5% significance level, there is a significant linear association between both total fertility rate and secondary school enrollment
+
+&nbsp;  
+
+**Association between secondary school enrollment adjusting for complex emergencies**
+
+In order to test if the relationship between secondary school enrollment and the outcome variable is distorted by the complex emergency status, we use ANOVA. Here, the model is adjusted for the complex emergency status.
+
+&nbsp;  
+
+#### Total Fertility Rate 
+
+*Null Hypothesis:* The effect of female secondary school enrollment is not significantly related to total fertility rate, adjusting for relative level of complex emergencies.
+
+*Alternative Hypothesis:* The effect of female secondary school enrollment is significantly related to total fertility rate, adjusting for relative level of complex emergencies.
+
+```{r, anova tfr}
+# Null model
+tfr_fit_null = lm(tfr ~ sec_school_enroll,data = tfr_df) 
+
+# Alternate larger model
+tfr_fit_alt = lm(tfr ~ cat_ce + sec_school_enroll, data = tfr_df) 
+
+# ANOVA test
+anova(tfr_fit_null, tfr_fit_alt) %>% 
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+The test statistic obtained is greater than the `F critical` value = `r qf(0.975, 2, 246)`. Hence, we reject the null hypothesis and conclude that school enrollment is significantly related to the total fertility rate adjusting for complex emergencies.
+
+&nbsp;  
+
+#### Net Reproduction Rate
+
+Null Hypothesis: The effect of female secondary school enrollment is not significantly related to net reproduction rate, adjusting for relative level of complex emergencies.
+
+Alternative Hypothesis: The effect of female secondary school enrollment is significantly related to net reproduction rate, adjusting for relative level of complex emergencies.
+
+```{r, anova nrr}
+# Null model
+nrr_fit_null = lm(nrr ~ sec_school_enroll, data = nrr_df) 
+
+# Alternate larger model
+nrr_fit_alt = lm(nrr ~ cat_ce + sec_school_enroll, data = nrr_df) 
+
+# ANOVA test
+anova(nrr_fit_null, nrr_fit_alt) %>%  
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+The test statistic obtained is greater than the `F critical` value = `r qf(0.975, 2, 246)`. Hence, we reject the null hypothesis and conclude that school enrollment is significantly related to the total fertility rate adjusting for complex emergencies.
+
+&nbsp;  
+
+### Conclusions
+
+From our scatter plot, we see that both Fertility Measures and Secondary School Enrollment are inversely associated as previously known. The data also presents a clear association between the Fertility Measures and Secondary School Enrollment with Complex Emergencies as a confounder. When statistically explored, there is a significant effect of Complex Emergencies on the relationship between Secondary School Enrollment and Fertility Measures (p-value < 0.001). 
+
+Overall, we would like to conclude that our linear models demonstrate that level of relative complex emergencies have a significant effect on secondary school enrollment and fertility measures in the included Southeast Asian countries from 1980 - 2010. 

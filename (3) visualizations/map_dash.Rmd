@@ -1,0 +1,206 @@
+---
+title: "Spatial Patterns"
+output: html_document
+---
+
+```{r settings, message = FALSE, echo = FALSE, warning = FALSE}
+library(tidyverse)
+library(readxl)
+library(sf)
+library(viridis)
+library(plotly)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis", 
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+```
+
+```{r cleaning, message = FALSE, echo = FALSE, warning = FALSE}
+se_asia_df = 
+  read_csv("./datasets/clean_all_merged_data.csv") %>% 
+  filter(!location_name == "Global") %>% 
+  filter(measure_name == "TFR") %>% 
+  mutate(location_name = recode(location_name, 
+                      "Brunei Darussalam" = "Brunei",
+                      "Lao PDR" = "Laos",
+                      "Myanmar" = "Myanmar (Burma)",
+                      "Viet Nam" = "Vietnam" 
+                      ))
+se_asia_80 =
+  se_asia_df %>% 
+  filter(year_id == "1980" | year_id == "1981" | year_id == "1982" | year_id == "1983" | year_id == "1984" | year_id == "1985" | year_id == "1986" | year_id == "1987" | year_id == "1988" | year_id == "1989") %>% 
+  distinct(location_name, year_id, .keep_all = TRUE) %>% 
+  group_by(location_name) %>% 
+  mutate(mean_tfr = mean(val, na.rm = TRUE)) %>% 
+  mutate(mean_edu = mean(sec_school_enroll, na.rm = TRUE)) %>% 
+  ungroup()
+
+se_asia_90 =
+  se_asia_df %>% 
+  filter(year_id == "1990" | year_id == "1991" | year_id == "1992" | year_id == "1993" | year_id == "1994" | year_id == "1995" | year_id == "1996" | year_id == "1997" | year_id == "1998" | year_id == "1999") %>% 
+  distinct(location_name, year_id, .keep_all = TRUE) %>% 
+  group_by(location_name) %>% 
+  mutate(mean_tfr = mean(val, na.rm = TRUE)) %>% 
+  mutate(mean_edu = mean(sec_school_enroll, na.rm = TRUE)) %>% 
+  ungroup()
+  
+se_asia_00 =
+  se_asia_df %>% 
+  filter(year_id == "2000" | year_id == "2001" | year_id == "2002" | year_id == "2003" | year_id == "2004" | year_id == "2005" | year_id == "2006" | year_id == "2007" | year_id == "2008" | year_id == "2009") %>% 
+  distinct(location_name, year_id, .keep_all = TRUE) %>% 
+  group_by(location_name) %>% 
+  mutate(mean_tfr = mean(val, na.rm = TRUE)) %>% 
+  mutate(mean_edu = mean(sec_school_enroll, na.rm = TRUE)) %>% 
+  ungroup()
+```
+
+```{r merging, message = FALSE, echo = FALSE, warning = FALSE, results = FALSE}
+country_boundary <- st_read(
+  "./datasets/spatial_data/99bfd9e7-bb42-4728-87b5-07f8c8ac631c2020328-1-1vef4ev.lu5nk.shp")
+
+sf_80 = merge(country_boundary, se_asia_80, by.x = "CNTRY_NAME", by.y = "location_name", all.x = FALSE)
+sf_90 = merge(country_boundary, se_asia_90, by.x = "CNTRY_NAME", by.y = "location_name", all.x = FALSE)
+sf_00 = merge(country_boundary, se_asia_00, by.x = "CNTRY_NAME", by.y = "location_name", all.x = FALSE)
+```
+```{r mapbox, message = FALSE, echo = FALSE, warning = FALSE}
+Sys.setenv('MAPBOX_TOKEN' =  'pk.eyJ1IjoibGF5YWJ1Y2hhbmFuIiwiYSI6ImNraHhqbzB6ZjA1dWsycXBjc3NneGh4M2QifQ.uYWn1RXvcG_qVxAJAZ_u5g')
+```
+
+This page explores spatial and temporal trends for both total fertility rates and secondary school enrollment rates in Southeast Asia from 1980 to 2010. Take some time to explore patterns over time, and compare school enrollment and total fertility rates for the same decades.
+
+### Total Fertility Rates
+These are the maps for average total fertility rates for three decades: the 1980s, the 1990s, and the 2000s.
+
+#### 1980s
+
+```{r  message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_80,
+  split = ~CNTRY_NAME,
+  color = ~mean_tfr,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Average Total Fertility Rate: ", mean_tfr, "
+Mean Secondary School Enrollment Rate: ", mean_edu), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Total Fertility Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+#### 1990s
+
+```{r  message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_90,
+  split = ~CNTRY_NAME,
+  color = ~mean_tfr,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Average Total Fertility Rate: ", mean_tfr, "
+Mean Secondary School Enrollment Rate: ", mean_edu), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Total Fertility Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+#### 2000s 
+
+```{r  message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_00,
+  split = ~CNTRY_NAME,
+  color = ~mean_tfr,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Average Total Fertility Rate: ", mean_tfr, "
+Mean Secondary School Enrollment Rate: ", mean_edu,"%"), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Total Fertility Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+### Secondary School Enrollment
+These are the maps for average secondary school enrollment for three decades: the 1980s, the 1990s, and the 2000s.
+
+#### 1980s
+
+```{r mapping, message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_80,
+  split = ~CNTRY_NAME,
+  color = ~mean_edu,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Mean Secondary School Enrollment Rate: ", mean_edu, "
+Average Total Fertility Rate: ", mean_tfr), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Secondary School Enrollment Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+#### 1990s
+
+```{r message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_90,
+  split = ~CNTRY_NAME,
+  color = ~mean_edu,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Mean Secondary School Enrollment Rate: ", mean_edu, "
+Average Total Fertility Rate: ", mean_tfr), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Secondary School Enrollment Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+```
+
+#### 2000s 
+
+```{r message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_00,
+  split = ~CNTRY_NAME,
+  color = ~mean_edu,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Mean Secondary School Enrollment Rate: ", mean_edu, "
+Average Total Fertility Rate: ", mean_tfr), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Secondary School Enrollment Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+```

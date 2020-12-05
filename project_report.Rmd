@@ -1,0 +1,858 @@
+---
+title: "Project Report"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+---------------------
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(readxl)
+library(sf)
+library(viridis)
+library(patchwork)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis", 
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+### Motivation
+
+Fertility rates are a direct indicator of population growth within a given country or region. The global total fertility rate has been steadily declining, and is projected to [drop to 1.66 by the year 2100](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30677-2/fulltext). Understanding how social and geopolitical events and  natural disasters potentially impact fertility is critical in understanding how population demographics change.
+
+In recent history, Southeast Asian countries have experienced a unique combination of complex emergencies, shifts in educational access, and disease outbreaks. This analysis aims to explore changes in fertility indicators in Southeast Asian countries over time, in relation to the aforementioned crises and socioeconomic shifts. 
+
+&nbsp;  
+ 
+#### Related Work
+ 
+ * Akpotu NE. **Education as Correlate of Fertility Rate among Families in Southern Nigeria.** Journal of Human Ecology. 2008;23(1):65-70. doi:10.1080/09709274.2008.11906056. 
+ 
+ * Peña R, Liljestrand J, et al. **Fertility and infant mortality trends in Nicaragua 1964-1993.** Journal of Epidemiology &amp; Community Health. 1999:132-137. 
+ 
+ * Becker SO, Cinnirella F, Woessmann L. **The trade-off between fertility and education: evidence from before the demographic transition.** Journal of Economic Growth. 2010;15(3):177-204. doi:10.1007/s10887-010-9054-x. 
+ 
+ * Gasseer NA, Dresden E, Keeney GB, Warren N. **Status of Women and Infants in Complex Humanitarian Emergencies.** Journal of Midwifery &amp; Women's Health. 2004;49(S1):7-13. doi:10.1016/j.jmwh.2004.05.001. 
+ 
+ &nbsp;  
+ &nbsp;  
+ 
+### Research Questions
+ 
+* How have total fertility rates, net reproduction rates, and education rates changed over time by country in Southeast Asia as compared to the global rates?
+
+* How do the total incidences of complex emergencies from 1980 - 2010 change by country in Southeast Asia?*
+
+* What are the spatial patterns in fertility rates and education levels by country from 1980 to 2010?
+
+* What is the relationship of total fertility rates on level of education and total number of complex emergencies for countries in Southeast Asia from 1980 - 2010?
+
+* What is the relationship of net reproduction rates on level of education and total number of complex emergencies for countries in Southeast Asia from 1980 - 2010?
+ 
+ &nbsp;  
+ &nbsp;  
+ 
+### Data
+
+#### Data Sources
+
+* Maternal Health Data Source: 
+[Global Burden of Disease Study 2019 (GBD 2019) Fertility Estimates 1950-2019](http://ghdx.healthdata.org/record/ihme-data/gbd-2019-fertility-estimates-1950-2019) 
+
+* Complex Emergency Data Source: [Reliefweb](https://reliefweb.github.io/search-converter/?appname=rwint-user-0&search-url=https%3A%2F%2Freliefweb.int%2Fdisasters%3Fadvanced-search%3D%2528C120.C228.C251.C44.C48.C135.C147.C165.C188.C212%2529_%2528DA19800101-20101231%2529)
+
+* Education Data Source: 
+[World Bank/UNESCO Institute for Statistics Data](https://data.worldbank.org/indicator/SE.SEC.ENRR)
+
+* Country Geometry Data Source: 
+[Esri](https://hub.arcgis.com/datasets/a21fdb46d23e4ef896f31475217cbb08_1/data?page=4)
+
+ &nbsp;  
+
+#### Variables of Interest
+
+##### Outcomes
+
+`TFR`: Total Fertility Rate, defined here as the average number of children a women would have assuming that current age-specific birth rates remain constant throughout her childbearing years
+
+`NRR`: Net Reproduction Rate, defined here as the average number of offspring (often specifically daughters) that would be born to a female if she passed through her lifetime conforming to the age-specific fertility and mortality rates of a given year. This is an important factor in countries known to have a gender imbalance.
+
+ &nbsp;  
+
+##### Predictors
+
+`sec_school_enroll`: Secondary School Enrollment for Females. This is measured through a gross percentage, defined as the ratio of children of official school age who are enrolled in school to the population of the corresponding official school age.
+
+`cat_ce`: Relative Category Level of Total Complex Emergencies, defined as situations of disrupted livelihoods and threats to life produced by warfare, civil disturbance and large-scale movements of people, in which any emergency response has to be conducted in a difficult political and security environment.
+
+ &nbsp;  
+
+#### Data Cleaning
+
+The selection of Southeast Asian countries was determined by membership in the [Association of Southeast Asian Nations (ASEAN)](https://asean.org/asean/asean-member-states/): Brunei Darussalam, Cambodia, Indonesia, Laos, Malaysia, Myanmar, Philippines, Singapore, Thailand, and Viet Nam.
+
+The data for the complex emergencies dataset was obtained through a JSON API from Reliefweb, a comprehensive collection of reported complex emergencies worldwide. The data was converted into a tidy format with only necessary variables retained. A categorical variable was created to separate the countries into levels of "None", "Low", "Medium", and "High" regarding the relative number of total CEs in that Southeast Asia. Complex emergencies without a specific country (i.e. region wide typhoons or disease outbreaks) were excluded for ease of analysis.
+
+```{r, eval = FALSE}
+## Obtaining the complex emergency data from the API
+rweb = 
+  GET("https://api.reliefweb.int/v1/disasters?appname=rwint-user-0&profile=list&preset=latest&slim=1&query[value]=country.id%3A(120%20OR%20228%20OR%20251%20OR%2044%20OR%2048%20OR%20135%20OR%20147%20OR%20165%20OR%20188%20OR%20212)%20AND%20date.created%3A%5B1980-01-01%20TO%202011-01-01%7D&query[operator]=AND&limit=500") %>% 
+   content("text") %>% 
+    jsonlite::fromJSON() %>% 
+    as_tibble()
+
+## JSON was difficult to manage, copied the data and imported as an excel file
+ce_df = read_xlsx("./datasets/ce_data.xlsx")
+
+## Creating appropriate variables and columns
+ce_df = 
+ce_df %>% 
+  drop_na() %>% 
+  
+  # Create appropriate date columns
+  separate(date, into = c("year_id", "x"), sep = 4) %>% 
+  select(-x) %>% 
+  
+  # Create country column
+  separate(name, into = c("location_name", "event"), sep = ":") %>% 
+  
+  #removing extra month info in description
+  separate(event, into = c("event", "r"), sep = "-") %>% 
+  separate(location_name, into = c("location_name", "s"), sep = "-" ) %>% 
+  select(-r, -s) %>% 
+  
+  # Renaming various Lao country names to Lao PDR
+  mutate(location_name = replace(location_name, str_detect(location_name, "Lao"), "Lao PDR")) %>%
+  
+  # Filtering only by events located within a specific country (to remove regional typhoons)
+  filter(location_name %in% c("Cambodia", "Indonesia", "Lao PDR", 
+                              "Malaysia", "Myanmar", "Philippines", "Singapore", 
+                              "Thailand", "Viet Nam", "Southeast Asia", "South Asia")) %>% 
+  
+  # Creating a categorical level variable for total number of CEs
+  mutate(
+    cat_ce = case_when(
+      location_name %in% c("Brunei Darussalam", "Viet Nam", "Singapore") ~ "None",
+      location_name %in% c("Lao PDR", "Malaysia", "Cambodia") ~ "Low",
+      location_name %in% c("Thailand", "Myanmar") ~ "Medium",
+      location_name %in% c("Philippines", "Indonesia") ~ "High")
+    )
+
+
+#Export
+write_csv(ce_df, "./(1) data_cleaning/datasets/clean_ce_data.csv")
+```
+
+ &nbsp;  
+ 
+The data for the education dataset was obtained from the World Bank, in collaboration with the UNESCO Institute for Statistics. Enrollment indicator data was collected via annual surveys, and gross enrollment rate was calculated by dividing the number of female students enrolled by the total female population within a given age group. The data was imported through read_xlsx, unnecessary variables were removed, and the data was organized into a tidy manner. 
+
+```{r, eval = FALSE}
+# Import the dataset
+educ_df =
+  read_xlsx("./(1) data_cleaning/datasets/educ_data.xlsx",
+    skip = 2) %>%
+  janitor::clean_names() %>%
+  
+  # Retain key variables
+  select(country_name, country_code, x1980:x2010) %>%
+  
+  # Format into a tidy dataset
+  pivot_longer(
+    x1980:x2010,
+    names_to = "year",
+    values_to = "sec_school_enroll") %>%
+  
+  # Format variables
+  mutate(year = str_replace(year,"x",""))
+
+#Identify ASEAN countries
+asean_countries = 
+  c("Brunei Darussalam", "Cambodia", "Indonesia",  "Lao PDR", "Malaysia", "Myanmar",  "Philippines",  "Singapore", "Thailand", "Vietnam")
+
+# Filter by ASEAN countries
+educ_df = 
+educ_df %>%
+  filter(country_name %in% asean_countries)
+
+# Export
+write_csv(educ_df, "./(1) data_cleaning/datasets/clean_educ_data.csv")
+```
+ 
+ &nbsp;  
+ 
+The fertility dataset was obtained from the data repository of the International Health Metrics and Evaluation's Global Burden of Disease study. Three CSVs, each representing a different fertility matrix, were imported, cleaned, and binded to form one dataframe. An additional column called `measure_name` was added to each dataset before merging. The final dataset included total fertility rate, net reproduction rate, and crude birth rate for all ten countries as well as global estimates from 1980 - 2010. 
+ 
+```{r, eval = FALSE}
+
+asean_countries = 
+  c("Brunei Darussalam", "Cambodia", "Indonesia",  "Lao People's Democratic Republic", "Malaysia", "Myanmar",  "Philippines",  "Singapore", "Thailand", "Viet Nam")
+
+# Total Fertility Rate
+tfr_df =
+  read_csv('./datasets/GBD_datasets/IHME_GBD_2019_FERTILITY_1950_2019_TFR_Y2020M08D05.CSV') %>%
+  filter(location_name %in% asean_countries | location_name == 'Global',
+         year_id >= 1980 & year_id <= 2010) %>%
+  select(-c(sex, metric_id, measure_id, metric_name, age_group_id, sex_id, location_id)) %>%
+  distinct() %>%
+  rowwise() %>%
+  mutate(measure_name = 'TFR')
+
+# Net Reproductive Rate
+nrr_df =
+  read_csv('./datasets/GBD_datasets/IHME_GBD_2019_FERTILITY_1950_2019_NRR_Y2020M08D05.CSV') %>%
+  filter(location_name %in% asean_countries | location_name == 'Global',
+         year_id >= 1980 & year_id <= 2010) %>%
+  select(-c(sex, metric_id, measure_id, metric_name, age_group_id, sex_id, location_id)) %>%
+  rowwise() %>%
+  mutate(measure_name = 'NRR')
+
+# Crude Birth Rate
+cbr_df = 
+  read_csv('./datasets/GBD_datasets/IHME_GBD_2019_FERTILITY_1950_2019_CBR_Y2020M08D05.CSV') %>%
+  filter(location_name %in% asean_countries | location_name == 'Global',
+         year_id >= 1980 & year_id <= 2010) %>%
+  select(-c(sex, metric_id, measure_id, metric_name, age_group_id, sex_id, location_id)) %>%
+  rowwise() %>%
+  mutate(measure_name = 'CBR')
+
+gbd_fertility_df = rbind(tfr_df, nrr_df, cbr_df) %>%
+  write_csv('./datasets/gbd_fertility.csv')
+
+```
+ 
+ &nbsp;  
+ 
+The three datasets were then merged by `location_name` and `year_id` as the unique identifiers present in each of the datasets. The final dataset includes yearly estimates for female secondary school enrollment, total fertility rate, net reproduction rate, and crude birth rate. Specific complex emergencies are noted in the country and year that they occur, with a brief description. The dataset then includes a categorical variable noting the total quantity of CEs for that country relative to the Southeast Asian region. 
+
+There are estimates for a total of 10 countries (Brunei Darussalam, Cambodia, Indonesia, Laos, Malaysia, Myanmar, Philippines, Singapore, Thailand, and Viet Nam) from 1980 - 2010, with some expected gaps in the data. 
+ 
+```{r, eval = FALSE}
+
+# Join complex emergency dataset to fertility dataset 
+gbd_ce = 
+  left_join(gbd_df, ce_tidy_df, by = c("location_name", "year_id")) %>%
+  arrange(location_name) %>%
+  relocate(location_name, year_id) %>% 
+  # when merging, the cat_ce variable only appears with years that have a CE
+  # will re add here, to ensure all countries have a label 
+   mutate(
+    cat_ce = case_when(
+      location_name %in% c("Brunei Darussalam", "Viet Nam", "Singapore") ~ "None",
+      location_name %in% c("Lao PDR", "Malaysia", "Cambodia") ~ "Low",
+      location_name %in% c("Thailand", "Myanmar") ~ "Medium",
+      location_name %in% c("Philippines", "Indonesia") ~ "High")
+    )
+  
+# Join education dataset to the previously merged dataset
+gbd_ce_edu =
+  left_join(gbd_ce, edu_df, by = c("location_name", "year_id")) %>%
+  arrange(location_name) %>%
+  relocate(location_name, year_id)
+
+# Export
+write_csv(gbd_ce_edu, "./datasets/clean_all_merged_data.csv")
+
+```
+   
+ &nbsp;  
+ &nbsp;  
+ 
+### Exploratory Analysis
+
+#### Fertility rates over time
+
+*How have total fertility rates changed over time by country in Southeast Asia as compared to the global rates?*
+
+```{r, message = FALSE, warning = FALSE}
+# Spaghetti Plot -- Fertility Rates over Time
+# X: Year (1980-2010)
+# Y: TFR 
+
+#read in fertility data
+fertility_tfr = 
+  read_csv("./datasets/gbd_fertility.csv") %>% 
+#retain relevant variables and filter by TFR values
+  select(location_name, year_id, val, measure_name) %>%
+  filter(measure_name == "TFR")
+
+#create plot
+fertility_tfr %>% 
+  plot_ly(
+    x = ~year_id, y = ~val, color = ~location_name, alpha = 0.5, type = "scatter", mode = "lines") %>%
+   layout(
+    title = "Total Fertility Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Total Fertility Rate (TFR)"),
+    showlegend = TRUE, 
+    legend = list(font = list(size = 8), orientation = 'h')
+   )
+ 
+    
+```
+ 
+This plot illustrates changes in total fertility rates in Southeast Asia, relative to global estimates, over time (1980-2010). During this period, total fertility rates in ASEAN countries steadily declined. The trends in these countries mirror what we observe on an international scale, as global total fertility rates consistently decreased during this time period as well. 
+
+Although declining, Cambodia, Lao PDR, Myanmar, and the Phillipines maintained total fertility rates that exceeded global averages between 1980-2010. Conversely, Thailand and Singapore had total fertility rates that consistently remained below global averages during this 3 decade time span. 
+
+Total fertility rates in Southeast Asia between 1980- 2010 ranged from `r round(min(pull(fertility_tfr, val)),2)` children per woman to `r round(max(pull(fertility_tfr, val)),2)` children per woman. 
+ 
+ &nbsp; 
+ 
+#### Net reproduction rates over time
+
+*How have net reproduction rates changed over time by country in Southeast Asia as compared to the global rates?*
+
+```{r message = FALSE, warning = FALSE}
+
+# Spaghetti Plot -- Net Reproduction Rates over Time
+# X: Year (1980-2010)
+# Y: NRR
+
+
+#read in fertility data
+fertility_nrr = 
+  read_csv("./datasets/gbd_fertility.csv") %>% 
+#retain relevant variables and filter by NRR values
+  select(location_name, year_id, val, measure_name) %>%
+  filter(measure_name == "NRR")
+
+#create plot
+fertility_nrr %>% 
+  plot_ly(
+    x = ~year_id, y = ~val, color = ~location_name, 
+    alpha = 0.5, type = "scatter", mode = "lines") %>%
+   layout(
+    title = "Net Reproduction Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Net Reproduction Rate (NRR)"),
+    showlegend = TRUE, 
+    legend = list(font = list(size = 8), orientation = 'h')
+    )
+
+```
+This plot illustrates changes in net reproduction rates in Southeast Asian countries, relative to global estimates, over time (1980-2010). 
+
+Within this period, ASEAN net reproduction rates appeared to mirror global net reproduction rates and declined over time. Cambodia, Lao PDR, the Philippines, and Myanmar maintained net reproduction rates that consistently exceeded global estimates. Conversely, Thailand and Singapore had net reproduction rates that were consistently below global estimates. 
+
+Net reproduction rates during this time span range from `r round(min(pull(fertility_nrr, val)),2)` daughters per woman to `r round(max(pull(fertility_nrr, val)),2)` daughters per woman. 
+
+ &nbsp;
+ 
+#### Education rates over time
+
+*How have secondary school enrollment rates for females changed over time by country in Southeast Asia?*
+
+
+```{r, message = FALSE, warning = FALSE}
+# Spaghetti Plot -- Education Rates over Time
+# X: Year (1980-2010)
+# Y: Female Secondary School Enrollment Rates  
+
+#read in education data
+education_df = 
+  read_csv("./datasets/clean_educ_data.csv") %>%
+#drop NAs to avoid any breaks in final graph
+  drop_na(sec_school_enroll)
+
+#create plot
+education_df %>%
+  plot_ly(
+    x = ~year, y = ~sec_school_enroll, color = ~country_name, alpha = 0.5, type = "scatter", mode = "lines") %>%
+  layout(
+    title = "Female Secondary School Enrollment Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Secondary School Enrollment Rate"),
+    showlegend = TRUE, 
+    legend = list(font = list(size = 10))
+    ) 
+```
+
+This plot illustrates changes in female secondary enrollment rates in Southeast Asia over time (1980-2010). Note that missing enrollment values were removed prior to visualization to avoid any potential breaks in the spaghetti plot.
+
+During this time period, secondary school enrollment rates for females in ASEAN countries appear to steadily increase. 
+
+Enrollment rates appear to be consistently highest in Brunei, the Phillipines, and Malaysia and consistently lowest in Myanmar, Lao PDR, and Cambodia. Most recently, in the year 2010, female enrollment rates appear to be highest in Brunei and lowest in Lao PDR. 
+
+Unlike total fertility rates and net reproductive rates over time, female secondary enrollment rates followed an upward trend during this 30-year time span. 
+
+ &nbsp;  
+ 
+#### Total Complex Emergencies By Country
+
+*How do the total incidences of complex emergencies from 1980 - 2010 change by country in Southeast Asia?*
+
+```{r message=FALSE, warning=FALSE}
+## Summary of complex emergencies by country 
+## X = Country
+## Y = Total Number of complex emergencies
+
+## Set up dataframe
+ce_df = read_csv("./datasets/clean_ce_data.csv") %>% 
+  filter(location_name %in% c("Cambodia", "Indonesia", "Lao PDR", 
+                              "Malaysia", "Myanmar", "Philippines", "Singapore", 
+                              "Thailand", "Viet Nam", "Southeast Asia", "South Asia"))
+
+## Create total observation variable
+ce_df %>% 
+  group_by(location_name) %>% 
+  summarize(
+    total_ce = n()) %>% 
+  mutate(location_name = fct_reorder(location_name, total_ce)) %>% 
+  
+## Plot
+  plot_ly(y = ~total_ce, x = ~location_name, color = ~location_name,
+          type = "bar", colors = "viridis", showlegend = FALSE) %>% 
+  layout(title = 'Total Number of Complex Emergencies by Country (1980 - 2010)',
+         xaxis = list(title = 'Country'),
+         yaxis = list(title = 'Total Complex Emergencies'), 
+         annotations = list(x = 0.75, y = 1, 
+                            text = "Brunei, Vietnam, Singapore have 0 recorded CEs", 
+                            showarrow = F, xref = 'paper', yref = 'paper', 
+                            xanchor = 'right', yanchor = 'auto', 
+                            xshift = 0, yshift = 0,
+                            font = list(size = 10, color = "black")))
+```
+
+This plot describes the total number of complex emergencies that have been recorded by Reliefweb in countries throughout Southeast Asia from 1980 - 2010. Several countries, Brunei Darussalam, Viet Nam, and Singapore, have no recorded complex emergencies during this time. It is important to note that this does not mean that no complex emergencies have occurred in these countries during this time frame, as datasets are only as robust as the surveillance measures available.
+
+The Philippines and Indonesia have the highest incidences of complex emergencies. This is most likely due to the high number of typhoons and earthquakes that each experience, relative to other countries in Southeast Asia. This distribution was utilized to create the categorical variable in the linear analyses by natural breaks in the observations. Brunei, Vietnam, and Singapore were classified as none. Lao PDR, Malaysia, and Cambodia were classified as low. Thailand and Myanmar were classified as medium. The Philippines and Indonesia were classified as high. 
+
+For future analyses, an in-depth breakdown of the most common types of complex emergency that each country faces, temporal distance of each complex emergency by country, and methods of international aid provided to each complex emergency would allow for more substantial inference. 
+
+ &nbsp;  
+ 
+
+#### Spatial Patterns in Fertility Rates
+
+*What are the spatial patterns in fertility rates and education levels by country from 1980 to 2010?*
+
+To create maps exploring spatial and temporal trends for both total fertility rates and secondary school enrollment rates in Southeast Asia from 1980 to 2010, the dataframe used for exploratory analysis and linear models was separated into three dataframes, one for each decade. Each of these were merged with a shapefile from Esri that contained information on country geometry and projections for mapping. Secondary school enrollment rates and total fertility rates were visualized as  choropleth maps separately by decade. Generally, countries with high fertility rates had lower secondary school enrollment rates, and over time, secondary school enrollment rates increased while total fertility rates decreased over the course of the three decades.
+
+```{r cleaning, message = FALSE, echo = FALSE, warning = FALSE}
+se_asia_df = 
+  read_csv("./datasets/clean_all_merged_data.csv") %>% 
+  filter(!location_name == "Global") %>% 
+  filter(measure_name == "TFR") %>% 
+  mutate(location_name = recode(location_name, 
+                      "Brunei Darussalam" = "Brunei",
+                      "Lao PDR" = "Laos",
+                      "Myanmar" = "Myanmar (Burma)",
+                      "Viet Nam" = "Vietnam" 
+                      ))
+se_asia_80 =
+  se_asia_df %>% 
+  filter(year_id == "1980" | year_id == "1981" | year_id == "1982" | year_id == "1983" | year_id == "1984" | year_id == "1985" | year_id == "1986" | year_id == "1987" | year_id == "1988" | year_id == "1989") %>% 
+  distinct(location_name, year_id, .keep_all = TRUE) %>% 
+  group_by(location_name) %>% 
+  mutate(mean_tfr = mean(val, na.rm = TRUE)) %>% 
+  mutate(mean_edu = mean(sec_school_enroll, na.rm = TRUE)) %>% 
+  ungroup()
+
+se_asia_90 =
+  se_asia_df %>% 
+  filter(year_id == "1990" | year_id == "1991" | year_id == "1992" | year_id == "1993" | year_id == "1994" | year_id == "1995" | year_id == "1996" | year_id == "1997" | year_id == "1998" | year_id == "1999") %>% 
+  distinct(location_name, year_id, .keep_all = TRUE) %>% 
+  group_by(location_name) %>% 
+  mutate(mean_tfr = mean(val, na.rm = TRUE)) %>% 
+  mutate(mean_edu = mean(sec_school_enroll, na.rm = TRUE)) %>% 
+  ungroup()
+  
+se_asia_00 =
+  se_asia_df %>% 
+  filter(year_id == "2000" | year_id == "2001" | year_id == "2002" | year_id == "2003" | year_id == "2004" | year_id == "2005" | year_id == "2006" | year_id == "2007" | year_id == "2008" | year_id == "2009") %>% 
+  distinct(location_name, year_id, .keep_all = TRUE) %>% 
+  group_by(location_name) %>% 
+  mutate(mean_tfr = mean(val, na.rm = TRUE)) %>% 
+  mutate(mean_edu = mean(sec_school_enroll, na.rm = TRUE)) %>% 
+  ungroup()
+```
+
+```{r merging, message = FALSE, echo = FALSE, warning = FALSE, results = FALSE}
+country_boundary <- st_read(
+  "./datasets/spatial_data/99bfd9e7-bb42-4728-87b5-07f8c8ac631c2020328-1-1vef4ev.lu5nk.shp")
+
+sf_80 = merge(country_boundary, se_asia_80, by.x = "CNTRY_NAME", by.y = "location_name", all.x = FALSE)
+sf_90 = merge(country_boundary, se_asia_90, by.x = "CNTRY_NAME", by.y = "location_name", all.x = FALSE)
+sf_00 = merge(country_boundary, se_asia_00, by.x = "CNTRY_NAME", by.y = "location_name", all.x = FALSE)
+```
+```{r mapbox, message = FALSE, echo = FALSE, warning = FALSE}
+Sys.setenv('MAPBOX_TOKEN' =  'pk.eyJ1IjoibGF5YWJ1Y2hhbmFuIiwiYSI6ImNraHhqbzB6ZjA1dWsycXBjc3NneGh4M2QifQ.uYWn1RXvcG_qVxAJAZ_u5g')
+```
+
+
+
+### Total Fertility Rates
+These are the maps for average total fertility rates for three decades: the 1980s, the 1990s, and the 2000s.
+
+#### 1980s
+
+```{r  message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_80,
+  split = ~CNTRY_NAME,
+  color = ~mean_tfr,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Average Total Fertility Rate: ", mean_tfr, "
+Mean Secondary School Enrollment Rate: ", mean_edu), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Total Fertility Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+#### 1990s
+
+```{r  message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_90,
+  split = ~CNTRY_NAME,
+  color = ~mean_tfr,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Average Total Fertility Rate: ", mean_tfr, "
+Mean Secondary School Enrollment Rate: ", mean_edu), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Total Fertility Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+#### 2000s 
+
+
+```{r  message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_00,
+  split = ~CNTRY_NAME,
+  color = ~mean_tfr,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Average Total Fertility Rate: ", mean_tfr, "
+Mean Secondary School Enrollment Rate: ", mean_edu,"%"), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Total Fertility Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+### Secondary School Enrollment
+These are the maps for average secondary school enrollment for three decades: the 1980s, the 1990s, and the 2000s.
+
+#### 1980s
+
+```{r mapping, message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_80,
+  split = ~CNTRY_NAME,
+  color = ~mean_edu,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Mean Secondary School Enrollment Rate: ", mean_edu, "
+Average Total Fertility Rate: ", mean_tfr), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Secondary School Enrollment Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+
+```
+
+#### 1990s
+
+
+```{r message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_90,
+  split = ~CNTRY_NAME,
+  color = ~mean_edu,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Mean Secondary School Enrollment Rate: ", mean_edu, "
+Average Total Fertility Rate: ", mean_tfr), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Secondary School Enrollment Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+```
+
+#### 2000s 
+
+```{r message = FALSE, echo = FALSE, warning = FALSE}
+plot_mapbox(
+  sf_00,
+  split = ~CNTRY_NAME,
+  color = ~mean_edu,
+  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
+  stroke = I("black"),
+  text = ~paste(CNTRY_NAME, "
+Mean Secondary School Enrollment Rate: ", mean_edu, "
+Average Total Fertility Rate: ", mean_tfr), 
+  hoverinfo = "text",
+  hoveron = "fill") %>% 
+  colorbar(title = "Secondary School Enrollment Rate") %>%
+  layout(
+    mapbox = list(
+      style = 'light'))
+```
+
+ &nbsp;  
+ 
+### Formal Analysis
+
+#### Overview 
+
+**What is the relationship between fertility rates on level of education and total number of complex emergencies for countries in Southeast Asia from 1980 - 2010?**
+
+We developed two linear models using each fertility measure - Total Fertility Rate (TFR) and Net Reproduction Rate (NRR) - as an outcome variable. The two covariates, Secondary School Enrollment and Category of Complex Emergencies were used in each model to understand their effect on the outcome variable. Complex emergency status, a categorical variable consisting of three levels (High/Medium/Low) was used to build a nested linear model. Countries with no complex emergencies were excluded from the model. Using a two-way ANOVA, the effect of complex emergency status on the linear association between the fertility measure and secondary school enrollment was found to be statistically significant. 
+
+```{r read_data, include = FALSE, message = FALSE}
+# Making two dataframes for the 2 linear models
+
+raw_df = read_csv('./datasets/clean_all_merged_data.csv') %>%
+  mutate(cat_ce = as.factor(cat_ce)) 
+
+# Re_ordering factors
+raw_df$cat_ce = factor(raw_df$cat_ce, levels = c("Low", "Medium", "High"))
+
+tfr_df = raw_df %>%
+  filter(
+    location_name != 'Global',
+    measure_name == 'TFR'
+  ) %>%
+  rename(
+    tfr = val
+  ) %>%
+  drop_na(cat_ce, sec_school_enroll)
+
+nrr_df = raw_df %>%
+  filter(
+    location_name != 'Global',
+    measure_name == 'NRR'
+  ) %>%
+  rename(
+    nrr = val
+  ) %>%
+  drop_na(cat_ce, sec_school_enroll)
+```
+
+```{r scatterplot, message = FALSE}
+
+# TFR distribution
+
+tfr_plot = 
+  tfr_df %>%
+  ggplot(aes(x = sec_school_enroll, y = tfr, color = factor(cat_ce))) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F,                                          
+                aes(group = factor(cat_ce),                                  
+                  color = factor(cat_ce))) +   
+  labs(
+    x = 'Seconday school enrollment (%)',
+    y = 'TFR (children per woman)',
+    title = 'TFR vs enrollment by CE status'
+  ) +
+  theme_bw()
+
+# NRR distribution
+
+nrr_plot = 
+  nrr_df %>%
+  ggplot(aes(x = sec_school_enroll, y = nrr, color = factor(cat_ce))) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F,
+              aes(group = factor(cat_ce),
+                  color = factor(cat_ce))) + 
+  labs(
+    x = 'Seconday school enrollment (%)',
+    y = 'NRR (daughters per woman)',
+    title = 'NRR vs enrollment by CE status'
+  ) +
+  theme_bw()
+
+tfr_plot + nrr_plot
+
+
+```
+
+ &nbsp;  
+
+#### Hypotheses
+
+**Association between secondary school enrollment on fertility measure**
+
+*Null hypothesis:* Secondary school enrollment is not linearly associated with the respective fertility estimate
+
+*Alternate hypothesis:* Secondary school enrollment is significantly linearly associated with the respective fertility estimate
+
+&nbsp;  
+
+#### Total Fertility Rate 
+
+```{r, tfr lm}
+lm(tfr ~ sec_school_enroll,data = tfr_df) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+At a 5% significance level, there is a significant linear association between both total fertility rate and secondary school enrollment
+
+&nbsp;  
+
+
+#### Net Reproduction Rate
+
+```{r, nr lm}
+lm(nrr ~ sec_school_enroll,data = nrr_df) %>%
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+At a 5% significance level, there is a significant linear association between both total fertility rate and secondary school enrollment.
+
+&nbsp; 
+&nbsp; 
+
+**Association between secondary school enrollment adjusting for complex emergencies**
+
+In order to test if the relationship between secondary school enrollment and the outcome variable is distorted by the complex emergency status, we use ANOVA. Here, the model is adjusted for the complex emergency status.
+
+&nbsp;  
+
+#### Total Fertility Rate 
+
+*Null Hypothesis:* The effect of female secondary school enrollment is not significantly related to total fertility rate, adjusting for relative level of complex emergencies.
+
+*Alternative Hypothesis:* The effect of female secondary school enrollment is significantly related to total fertility rate, adjusting for relative level of complex emergencies.
+
+```{r, anova tfr}
+# Null model
+tfr_fit_null = lm(tfr ~ sec_school_enroll,data = tfr_df) 
+
+# Alternate larger model
+tfr_fit_alt = lm(tfr ~ cat_ce + sec_school_enroll, data = tfr_df) 
+
+# ANOVA test
+anova(tfr_fit_null, tfr_fit_alt) %>% 
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+The test statistic obtained is greater than the `F critical` value = `r qf(0.975, 2, 246)`. Hence, we reject the null hypothesis and conclude that school enrollment is significantly related to the total fertility rate adjusting for complex emergencies.
+
+&nbsp;  
+
+#### Net Reproduction Rate
+
+Null Hypothesis: The effect of female secondary school enrollment is not significantly related to net reproductive rate, adjusting for relative level of complex emergencies.
+
+Alternative Hypothesis: The effect of female secondary school enrollment is significantly related to net reproductive rate, adjusting for relative level of complex emergencies.
+
+```{r, anova nrr}
+# Null model
+nrr_fit_null = lm(nrr ~ sec_school_enroll, data = nrr_df) 
+
+# Alternate larger model
+nrr_fit_alt = lm(nrr ~ cat_ce + sec_school_enroll, data = nrr_df) 
+
+# ANOVA test
+anova(nrr_fit_null, nrr_fit_alt) %>%  
+  broom::tidy() %>%
+  knitr::kable()
+```
+
+The test statistic obtained is greater than the `F critical` value = `r qf(0.975, 2, 246)`. Hence, we reject the null hypothesis and conclude that school enrollment is significantly related to the total fertility rate adjusting for complex emergencies.
+
+&nbsp; 
+&nbsp; 
+
+#### Conclusions
+
+We observe that both Fertility Measures and Secondary School Enrollment are inversely associated as previously known. The data also presents a clear association between the Fertility Measures and Secondary School Enrollment with Complex Emergencies as a confounder. When statistically explored, there is a significant effect of Complex Emergencies on the relationship between Secondary School Enrollment and each of the two Fertility Measures (p-value < 0.001). 
+
+Overall, we would like to conclude that our linear models demonstrate that level of relative complex emergencies have a significant effect on secondary school enrollment and fertility measures in the included Southeast Asian countries from 1980 - 2010. 
+ 
+ &nbsp;  
+ &nbsp;  
+ 
+### Discussion 
+
+**Exploratory analysis** 
+
+The total fertility rates (TFR) in each of the south east asian (ASEAN) countries are on a decline in the 30 year time period with Cambodia, Thailand, Myanmar and Singapore remaining below global average. This decline has been attributed to a [variety of factors](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4255510/) such as mortality rates, economic conditions, education levels and access to birth control methods. Additionally, we also look at net reproduction rate (NRR) along with TFR as it includes the mortality rate of women that do not live past their reproductive years. This is an important factor in regions with sex imbalances. Among ASEAN countries, there is an [range of distribution](https://www.statista.com/statistics/1026622/asean-population-by-gender/) in sex ratios with Brunei having the lowest proportion of females (47.2%) and Myanmar, the largest (52%). 
+
+Secondary school enrollment for females is considered to be an important factor in the overall growth of a country. Female education levels in ASEAN countries have an overall upward trend with Brunei, Phillipines, and Malaysia being consistently higher than the others. Increase in female secondary school enrollment has known to be associated with a decrease in fertility rate. 
+
+Complex emergencies in a region can create a temporary disruption to family planning services. Depending on the intensity of the event, it may cause a decrease during the emergency with the potential to create fertility spikes following the event observed in the case of [natural disasters](https://www.prb.org/natural-disasters-can-influence-reproductive-health-and-fertility/). Philippines and Indonesia have a considerably greater incidence of complex emergencies between 1980-2010 as reported.
+ &nbsp;  
+ 
+**Inverse relationship between fertility measures and secondary school enrollment**
+
+Total fertility rate and net reproduction rate are negatively related to the secondary school enrollment. This negative relationship is uniformly seen in all countries indicating that women educated to a secondary school level in south east asian countries do have fewer children on an average. The inverse relationship between fertlity measures and secondary school enrollment has been attributed to factors such as [greater awareness of the need for family planning](https://www.un.org/en/development/desa/population/events/pdf/expert/25/2016-EGM_Elina%20Pradhan.pdf) in educated women. Further, it is also known that [female education matters more](http://www.nber.org/papers/w10513) than male education in deciding the trajectory of fertility rates. 
+ &nbsp;  
+ 
+ **Impact of complex emergencies on the relationship between fertility measures and secondary school enrollment**
+ 
+Complex emergencies such as natural disasters have been observed to affect socioeconomic status, fertility rates and education levels [separately](https://elibrary.worldbank.org/doi/abs/10.1596/1813-9450-4883). Complex emergencies [affect education levels negatively](https://www.brookings.edu/blog/education-plus-development/2018/01/23/how-natural-disasters-undermine-schooling/) by increasing absenteeism and reduction in economic resources required to support school enrollment.  Using linear models combining education levels and complex emergency status in this study, we observe that varying levels of complex emergency status in ASEAN countries impacts the relationship between fertility measures and secondary school enrollment significantly. 
+
+ &nbsp;  
+ &nbsp;  
+
+### Citations
+
+http://ghdx.healthdata.org/record/ihme-data/gbd-2019-fertility-estimates-1950-2019
+
+https://www.who.int/environmental_health_emergencies/complex_emergencies/en/#:~:text=Complex%20emergencies%20are%20situations%20of,difficult%20political%20and%20security%20environment.
+
+https://www.indexmundi.com/facts/indicators/SE.SEC.NENR.FE#:~:text=Indicators%20%3E%20Education%20%3E%20Participation-,School%20enrollment%2C%20secondary%2C%20female%20(%25%20net),the%20corresponding%20official%20school%20age.
+
+https://en.wikipedia.org/wiki/Net_reproduction_rate
+
+https://populationeducation.org/what-total-fertility-rate/
+
+ &nbsp;  
+ 
+---------------------
+
+### Contributors
+
+Yaa Ababio (yoa2102, yababio)
+
+Kristina Howell (kdh2140, anamikadevi)
+
+Jyoti Kumar (jk4443, jk4443)
+
+Nikhita Damaraju (nd2674, nikhitadamaraju)
+
+Laya Buchanan (lmb2295, layabuchanan)

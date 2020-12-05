@@ -1,0 +1,90 @@
+---
+title: "Data Cleaning: Final Merge"
+output: github_document
+---
+
+The following settings and libraries will be used throughout. 
+
+```{r settings, message = FALSE}
+library(tidyverse)
+library(rvest)
+library(httr)
+library(readxl)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis", 
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+# Setting working directory to cleaning 
+#setwd('./(1) data_cleaning/')
+
+```
+
+### Import files
+
+```{r}
+# Import fertility dataset
+gbd_df = read_csv("./datasets/gbd_fertility.csv") %>%
+  # Renaming various Lao country names to Lao PDR
+  mutate(location_name = replace(location_name, 
+                                 location_name == 'Lao People\'s Democratic Republic', 'Lao PDR'))  
+
+
+# Import CE dataset
+ce_tidy_df = read_csv("./datasets/clean_ce_data.csv") 
+
+
+# Import the education dataset
+edu_df = read_csv('./datasets/clean_educ_data.csv') %>%
+  # Renaming columns to match with gbd and ce datasets
+  rename(location_name = country_name,
+         year_id = year) %>%
+  select(-country_code) %>%
+  # Changing Vietnam to Viet Nam
+  mutate(location_name = replace(location_name, str_detect(location_name, "Viet"), "Viet Nam"))
+```
+
+
+### Merge by country name and year
+
+```{r}
+# Join complex emergency dataset to fertility dataset 
+gbd_ce = 
+  left_join(gbd_df, ce_tidy_df, by = c("location_name", "year_id")) %>%
+  arrange(location_name) %>%
+  relocate(location_name, year_id) %>% 
+  # when merging, the cat_ce variable only appears with years that have a CE
+  # will re add here, to ensure all countries have a label 
+   mutate(
+    cat_ce = case_when(
+      location_name %in% c("Brunei Darussalam", "Viet Nam", "Singapore") ~ "None",
+      location_name %in% c("Lao PDR", "Malaysia", "Cambodia") ~ "Low",
+      location_name %in% c("Thailand", "Myanmar") ~ "Medium",
+      location_name %in% c("Philippines", "Indonesia") ~ "High")
+    )
+  
+# Join education dataset to the previously merged dataset
+gbd_ce_edu =
+  left_join(gbd_ce, edu_df, by = c("location_name", "year_id")) %>%
+  arrange(location_name) %>%
+  relocate(location_name, year_id)
+```
+
+### Saving merged dataset as a .csv file
+
+```{r}
+write_csv(gbd_ce_edu, "./datasets/clean_all_merged_data.csv")
+```
+
+
+
+
+
+
+

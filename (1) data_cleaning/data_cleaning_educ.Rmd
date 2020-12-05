@@ -1,0 +1,61 @@
+---
+title: "Data Cleaning: Secondary School Enrollment"
+output: html_document
+---
+
+```{r settings, message = FALSE}
+library(tidyverse)
+library(dplyr)
+library(readxl)
+install.packages("read_xl")
+```
+
+
+#### Data Cleaning
+Cleaning education data by standardizing column names and retaining secondary enrollment data from 1980-2010.
+```{r}
+educ_df =
+  read_xlsx(
+    "./(1) data_cleaning/datasets/educ_data.xlsx",
+    skip = 2
+  ) %>%
+  janitor::clean_names() %>%
+  select(country_name, country_code, x1980:x2010) %>%
+  pivot_longer(
+    x1980:x2010,
+    names_to = "year",
+    values_to = "sec_school_enroll"
+  ) %>%
+  mutate(year = str_replace(year,"x","")
+        )
+```
+
+Retaining  ASEAN countries:
+
+
+* Brunei Darussalam
+* Cambodia 
+* Indonesia 
+* Lao People's Democratic Republic 
+* Malaysia
+* Myanmar 
+* Philippines 
+* Singapore
+* Thailand
+* Viet Nam
+
+```{r}
+asean_countries = 
+  c("Brunei Darussalam", "Cambodia", "Indonesia",  "Lao PDR", "Malaysia", "Myanmar",  "Philippines",  "Singapore", "Thailand", "Vietnam")
+
+educ_df = 
+educ_df %>%
+  filter(country_name %in% asean_countries)
+  
+```
+
+Exporting as csv file
+```{r}
+write_csv(educ_df, "./(1) data_cleaning/datasets/clean_educ_data.csv")
+```
+

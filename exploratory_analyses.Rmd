@@ -1,0 +1,235 @@
+---
+title: "Exploratory Analyses"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+&nbsp;  
+
+On this page, you will find exploratory analyses of the predictors and outcomes for our linear models. Predictors described here include *Female Secondary School Enrollment Rates* and *Total Number of Complex Emergencies*. Outcomes include *Total Fertility Rates* and *Net Reproductive Rates*.
+
+---------------------
+
+```{r message=FALSE, warning=FALSE, include = FALSE}
+library(tidyverse)
+library(plotly)
+library(readr)
+```
+
+
+### Total Fertility Rates Over Time - SE Asia
+
+```{r, tfr, message=FALSE, warning=FALSE}
+# Chart A: Spaghetti Plot -- Fertility Rates over Time
+# X: Year (1980-2010)
+# Y: TFR 
+
+fertility_tfr = 
+  read_csv("./datasets/gbd_fertility.csv") %>% 
+  select(location_name, year_id, val, measure_name) %>%
+  filter(measure_name == "TFR") %>% 
+  mutate(location_name = replace(location_name, 
+                                 location_name == 'Lao People\'s Democratic Republic',
+                                 'Lao PDR'))  
+
+fertility_tfr %>% 
+  plot_ly(
+    x = ~year_id, y = ~val, color = ~location_name, colors = "Dark2",
+    alpha = 0.5, type = "scatter", mode = "lines") %>%
+   layout(
+    title = "Total Fertility Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Total Fertility Rate (TFR)"),
+    showlegend = TRUE, 
+    legend = list(font = list(size = 10))
+    )
+```
+This plot illustrates changes in total fertility rates in Southeast Asia, relative to global estimates, over time (1980 - 2010). During this period, total fertility rates in ASEAN countries steadily declined. The trends in these countries mirror what we observe on an international scale, as global total fertility rates consistently decreased during this time period as well. 
+
+Although declining, Cambodia, Lao PDR, Myanmar, and the Phillipines maintained total fertility rates that exceeded global averages between 1980 - 2010. Conversely, Thailand and Singapore had total fertility rates that consistently remained below global averages during this 3 decade time span. 
+
+Total fertility rates in Southeast Asia between 1980 - 2010 ranged from `r round(min(pull(fertility_tfr, val)),2)` children per woman to `r round(max(pull(fertility_tfr, val)),2)` children per woman.
+
+
+&nbsp;  
+
+-----------------------------------------------------------------------
+
+### Net Reproduction Rates Over Time - SE Asia
+```{r message = FALSE, warning = FALSE}
+# Spaghetti Plot -- Net Reproduction Rates over Time
+# X: Year (1980-2010)
+# Y: NRR
+
+
+fertility_nrr = 
+  read_csv("./datasets/gbd_fertility.csv") %>% 
+  select(location_name, year_id, val, measure_name) %>%
+  filter(measure_name == "NRR") %>% 
+  mutate(location_name = replace(location_name, 
+                                 location_name == 'Lao People\'s Democratic Republic',
+                                 'Lao PDR'))  
+
+fertility_nrr %>% 
+  plot_ly(
+    x = ~year_id, y = ~val, color = ~location_name, colors = "Dark2",
+    alpha = 0.5, type = "scatter", mode = "lines") %>%
+   layout(
+    title = "Net Reproduction Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Net Reproductive Rate (NRR)"),
+    showlegend = TRUE, 
+    legend = list(font = list(size = 10))
+    )
+```
+This plot illustrates changes in net reproductive rates in Southeast Asian countries, relative to global estimates, over time (1980 - 2010). 
+
+Within this time period, ASEAN net reproductive rates appeared to mirror global net reproduction rates and declined over time. Cambodia, Lao PDR, Philippines, and Myanmar maintained net reproduction rates that consistently exceeded global estimates. Conversely, Thailand and Singapore had net reproduction rates that were consistently below global estimates. 
+
+Net reproduction rates during this time span range from `r round(min(pull(fertility_nrr, val)),2)` daughters per woman to `r round(max(pull(fertility_nrr, val)),2)` daughters per woman. 
+
+-----------------------------------------------------------------------
+
+
+### Female Secondary School Enrollment Rates Over Time - SE Asia
+
+```{r message=FALSE, warning=FALSE}
+# Chart B: Spaghetti Plot -- Education Rates over Time
+# X: Year (1980-2010)
+# Y: Female Secondary School Enrollment Rates  
+
+
+education_df = 
+  read_csv("./datasets/clean_educ_data.csv") %>%
+  drop_na(sec_school_enroll)
+
+
+education_df %>% 
+  plot_ly(
+    x = ~year, y = ~sec_school_enroll, color = ~country_name, colors = "Dark2",
+    alpha = 0.5, type = "scatter", mode = "lines") %>%
+  layout(
+    title = "Female Secondary School Enrollment Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Secondary School Enrollment Rate"),
+    showlegend = TRUE, 
+    legend = list(font = list(size = 10))
+    ) 
+```
+This plot illustrates changes in female secondary enrollment rates in Southeast Asia over time (1980-2010). During this period, secondary school enrollment rates for females in ASEAN countries appear to steadily increase. 
+
+Enrollment rates appear to be consistently highest in Brunei, Phillipines, and Malaysia and consistently lowest in Myanmar, Lao PDR, and Cambodia. Most recently, in the year 2010, female enrollment rates appear to be highest in Brunei and lowest in Lao PDR. 
+
+Unlike total fertility rates and net reproductive rates over time, female secondary enrollment rates followed an upward trend during this 30-year time span
+ 
+
+&nbsp;  
+
+-----------------------------------------------------------------------
+
+### Total Complex Emergencies by Country
+
+```{r message=FALSE, warning=FALSE}
+## Summary of complex emergencies by country 
+## X = Country
+## Y = Total Number of complex emergencies
+
+## Set up dataframe
+ce_df = read_csv("./datasets/clean_ce_data.csv") %>% 
+  filter(location_name %in% c("Cambodia", "Indonesia", "Lao PDR", 
+                              "Malaysia", "Myanmar", "Philippines", "Singapore", 
+                              "Thailand", "Viet Nam", "Southeast Asia", "South Asia"))
+
+## Create total observation variable
+ce_df %>% 
+  group_by(location_name) %>% 
+  summarize(
+    total_ce = n()) %>% 
+  mutate(location_name = fct_reorder(location_name, total_ce)) %>% 
+  
+## Plot
+  plot_ly(y = ~total_ce, x = ~location_name, color = ~location_name,
+          type = "bar", colors = "viridis", showlegend = FALSE) %>% 
+  layout(title = 'Total Number of Complex Emergencies by Country (1980 - 2010)',
+         xaxis = list(title = 'Country'),
+         yaxis = list(title = 'Total Complex Emergencies'), 
+         annotations = list(x = 0.75, y = 1, 
+                            text = "Brunei, Vietnam, Singapore have 0 recorded CEs", 
+                            showarrow = F, xref = 'paper', yref = 'paper', 
+                            xanchor = 'right', yanchor = 'auto', 
+                            xshift = 0, yshift = 0,
+                            font = list(size = 10, color = "black")))
+```
+
+This plot describes the total number of complex emergencies that have been recorded by Reliefweb in countries throughout Southeast Asia from 1980 - 2010. Several countries, Brunei Darussalam, Viet Nam, and Singapore have no recorded complex emergencies during this time. It is important to note that this does not mean that no complex emergencies have occurred in these countries during this time frame, as datasets are only as robust as the surveillance measures available.
+
+The Philippines and Indonesia have the highest incidences of complex emergencies. This is most likely due to the high number of typhoons and earthquakes that each experience, relative to other countries in Southeast Asia. This distribution was utilized to create the categorical variable in the linear analyses by natural breaks in the observations. The observations span from 0 to 108 complex emergencies per country. 
+
+
+&nbsp;  
+
+
+```{r message=FALSE, warning=FALSE, eval = FALSE, include = FALSE}
+## Type of complex emergencies by country 
+## X = Country, Y = Total Number of complex emergencies
+
+## Set up code
+ce_df = read_csv("./datasets/clean_ce_data.csv") %>% 
+  
+  # Filter by Southeast Asian Country
+  filter(location_name %in% c("Cambodia", "Indonesia", "Lao PDR", 
+                              "Malaysia", "Myanmar", "Philippines", "Singapore", 
+                              "Thailand", "Viet Nam", "Southeast Asia", "South Asia")) %>% 
+  
+# Create categories for type of complex emergency
+  mutate(
+    type_ce = case_when(
+      event %in% c(str_detect(event, "Earthquake", "Cold Wave")) 
+                  ~ "Natural Disaster")),
+      event %in% c("Ferry", "Oil", "gas", "spill") ~ "Manmade Disaster",
+      event %in% c("Epidemic") ~ "Disease Outbreak"))
+  
+  
+  ## using plot_ly
+  plot_ly(y = ~total_ce, x = ~location_name, color = ~location_name,
+          type = "bar", colors = "viridis", showlegend = FALSE) %>% 
+  layout(title = 'Total Number of Complex Emergencies by Country (1980 - 2010)',
+         xaxis = list(title = 'Country'),
+         yaxis = list(title = 'Total Complex Emergencies'), 
+         annotations = list(x = 0.75, y = 1, 
+                            text = "Brunei, Vietnam, Singapore have 0 recorded CEs", 
+                            showarrow = F, xref = 'paper', yref = 'paper', 
+                            xanchor = 'right', yanchor = 'auto', 
+                            xshift = 0, yshift = 0,
+                            font = list(size = 10, color = "black")))
+
+  ## want to include median year of complex emergencies in hover text. will work on that. maybe also most often type of CE
+  
+  ## "Cyclone", "Drought", "Flood", "Fire", "Lahar", "Land", "Volcan", "Mudslide", 
+  ## "Papua", "Storm", "Tidal", "Tropical", "Typhoon"
+  
+  ce_df %>% distinct(event) %>% View()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

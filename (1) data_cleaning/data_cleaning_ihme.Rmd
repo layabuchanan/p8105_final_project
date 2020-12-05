@@ -1,0 +1,83 @@
+---
+title: "Data Cleaing: IHME Fertility estimates"
+output: github_document
+---
+
+```{r settings, message = FALSE}
+library(tidyverse)
+library(dplyr)
+```
+
+### Reading datasets 
+The following metrics are considered for this project
+
+* Total Fertility Rate (TFR)
+* Net Reproductive Rate (NRR)
+* Crude Birth Rate (CBR)
+
+ASEAN countries considered here are
+
+* Brunei Darussalam
+* Cambodia 
+* Indonesia 
+* Lao People's Democratic Republic 
+* Malaysia
+* Myanmar 
+* Philippines 
+* Singapore
+* Thailand
+* Viet Nam
+
+```{r, message = FALSE}
+asean_countries = 
+  c("Brunei Darussalam", "Cambodia", "Indonesia",  "Lao People's Democratic Republic", "Malaysia", "Myanmar",  "Philippines",  "Singapore", "Thailand", "Viet Nam")
+
+# Total Fertility Rate
+tfr_df =
+  read_csv('./datasets/GBD_datasets/IHME_GBD_2019_FERTILITY_1950_2019_TFR_Y2020M08D05.CSV') %>%
+  filter(location_name %in% asean_countries | location_name == 'Global',
+         year_id >= 1980 & year_id <= 2010) %>%
+  select(-c(sex, metric_id, measure_id, metric_name, age_group_id, sex_id, location_id)) %>%
+  distinct() %>%
+  rowwise() %>%
+  mutate(measure_name = 'TFR')
+
+# Net Reproductive Rate
+nrr_df =
+  read_csv('./datasets/GBD_datasets/IHME_GBD_2019_FERTILITY_1950_2019_NRR_Y2020M08D05.CSV') %>%
+  filter(location_name %in% asean_countries | location_name == 'Global',
+         year_id >= 1980 & year_id <= 2010) %>%
+  select(-c(sex, metric_id, measure_id, metric_name, age_group_id, sex_id, location_id)) %>%
+  rowwise() %>%
+  mutate(measure_name = 'NRR')
+
+# Crude Birth Rate
+cbr_df = 
+  read_csv('./datasets/GBD_datasets/IHME_GBD_2019_FERTILITY_1950_2019_CBR_Y2020M08D05.CSV') %>%
+  filter(location_name %in% asean_countries | location_name == 'Global',
+         year_id >= 1980 & year_id <= 2010) %>%
+  select(-c(sex, metric_id, measure_id, metric_name, age_group_id, sex_id, location_id)) %>%
+  rowwise() %>%
+  mutate(measure_name = 'CBR')
+
+```
+
+Each dataset includes the following 7 columns
+
+* location_name
+* age_group_name
+* year_id
+* measure_name
+* val
+* upper
+* lower 
+
+### Combining all dataframes together
+
+```{r}
+gbd_fertility_df = rbind(tfr_df, nrr_df, cbr_df) %>%
+  write_csv('./datasets/gbd_fertility.csv')
+```
+
+The merged dataset contains `r nrow(gbd_fertility_df)` rows and `r ncol(gbd_fertility_df)` columns in total. It includes 10 Southeast Asian countries along with global estimate for each metric calculated between 1980 and 2010.
+

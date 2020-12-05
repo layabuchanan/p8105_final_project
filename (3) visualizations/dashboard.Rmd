@@ -1,0 +1,67 @@
+---
+title: "Dashboard 2"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Total Fertility Rates Over Time - SE Asia
+
+```{r}
+# Chart A: Spaghetti Plot -- Fertility Rates over Time
+# X: Year (1980-2010)
+# Y: TFR 
+
+fertility_df = 
+  read_csv("./datasets/gbd_fertility.csv") %>% 
+  select(location_name, year_id, val, measure_name) %>%
+  filter(measure_name == "TFR")
+
+fertility_df %>% 
+  plot_ly(
+    x = ~year_id, y = ~val, color = ~location_name, alpha = 0.5, type = "scatter", mode = "lines") %>%
+   layout(
+    #title = "Total Fertility Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Total Fertility Rate (TFR)"),
+    legend = list(orientation = 'h')
+    )
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Female Secondary School Enrollment Rates Over Time - SE Asia
+
+```{r}
+# Chart B: Spaghetti Plot -- Education Rates over Time
+# X: Year (1980-2010)
+# Y: Female Secondary School Enrollment Rates  
+
+
+education_df = 
+  read_csv("./datasets/clean_educ_data.csv") %>%
+  drop_na(sec_school_enroll)
+
+education_df %>%
+  plot_ly(
+    x = ~year, y = ~sec_school_enroll, color = ~country_name, alpha = 0.5, type = "scatter", mode = "lines") %>%
+  layout(
+    #title = "Female Secondary School Enrollment Rates Over Time - SE Asia",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Secondary School Enrollment Rate"),
+    legend = list(orientation = 'h')
+    ) 
+```
+
