@@ -79,7 +79,7 @@ sf_00 = merge(country_boundary, se_asia_00, by.x = "CNTRY_NAME", by.y = "locatio
 Sys.setenv('MAPBOX_TOKEN' =  'pk.eyJ1IjoibGF5YWJ1Y2hhbmFuIiwiYSI6ImNraHhqbzB6ZjA1dWsycXBjc3NneGh4M2QifQ.uYWn1RXvcG_qVxAJAZ_u5g')
 ```
 
-This page explores spatial and temporal trends for both total fertility rates and secondary school enrollment rates in Southeast Asia from 1980 to 2010. Take some time to explore patterns over time, and compare school enrollment and total fertility rates for the same decades.
+This page explores spatial and temporal trends for both total fertility rates (hover for secondary school enrollment rates) in Southeast Asia from 1980 to 2010. Take some time to explore patterns over time, and compare school enrollment and total fertility rates for the same decades.
 
 ### Total Fertility Rates
 These are the maps for average total fertility rates for three decades: the 1980s, the 1990s, and the 2000s.
@@ -146,69 +146,4 @@ Mean Secondary School Enrollment Rate: ", mean_edu,"%"),
     mapbox = list(
       style = 'light'))
 
-```
-
-### Secondary School Enrollment
-These are the maps for average secondary school enrollment for three decades: the 1980s, the 1990s, and the 2000s.
-
-#### 1980s
-
-```{r mapping, message = FALSE, echo = FALSE, warning = FALSE}
-plot_mapbox(
-  sf_80,
-  split = ~CNTRY_NAME,
-  color = ~mean_edu,
-  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
-  stroke = I("black"),
-  text = ~paste(CNTRY_NAME, "
-Mean Secondary School Enrollment Rate: ", mean_edu, "
-Average Total Fertility Rate: ", mean_tfr), 
-  hoverinfo = "text",
-  hoveron = "fill") %>% 
-  colorbar(title = "Secondary School Enrollment Rate") %>%
-  layout(
-    mapbox = list(
-      style = 'light'))
-
-```
-
-#### 1990s
-
-
-```{r message = FALSE, echo = FALSE, warning = FALSE}
-plot_mapbox(
-  sf_90,
-  split = ~CNTRY_NAME,
-  color = ~mean_edu,
-  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
-  stroke = I("black"),
-  text = ~paste(CNTRY_NAME, "
-Mean Secondary School Enrollment Rate: ", mean_edu, "
-Average Total Fertility Rate: ", mean_tfr), 
-  hoverinfo = "text",
-  hoveron = "fill") %>% 
-  colorbar(title = "Secondary School Enrollment Rate") %>%
-  layout(
-    mapbox = list(
-      style = 'light'))
-```
-
-#### 2000s 
-
-```{r message = FALSE, echo = FALSE, warning = FALSE}
-plot_mapbox(
-  sf_00,
-  split = ~CNTRY_NAME,
-  color = ~mean_edu,
-  colors = magma(50, alpha = 1, begin = 0, end = 1, direction = ),
-  stroke = I("black"),
-  text = ~paste(CNTRY_NAME, "
-Mean Secondary School Enrollment Rate: ", mean_edu, "
-Average Total Fertility Rate: ", mean_tfr), 
-  hoverinfo = "text",
-  hoveron = "fill") %>% 
-  colorbar(title = "Secondary School Enrollment Rate") %>%
-  layout(
-    mapbox = list(
-      style = 'light'))
 ```
