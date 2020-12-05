@@ -54,7 +54,7 @@ In recent history, Southeast Asian countries have experienced a unique combinati
  
 * How have total fertility rates, net reproduction rates, and education rates changed over time by country in Southeast Asia as compared to the global rates?
 
-* How do the total incidences of complex emergencies from 1980 - 2010 change by country in Southeast Asia?*
+* How do the total incidences of complex emergencies from 1980 - 2010 change by country in Southeast Asia?
 
 * What are the spatial patterns in fertility rates and education levels by country from 1980 to 2010?
 
@@ -387,7 +387,7 @@ During this time period, secondary school enrollment rates for females in ASEAN 
 
 Enrollment rates appear to be consistently highest in Brunei, the Phillipines, and Malaysia and consistently lowest in Myanmar, Lao PDR, and Cambodia. Most recently, in the year 2010, female enrollment rates appear to be highest in Brunei and lowest in Lao PDR. 
 
-Unlike total fertility rates and net reproductive rates over time, female secondary enrollment rates followed an upward trend during this 30-year time span. 
+Unlike total fertility rates and net reproduction rates over time, female secondary enrollment rates followed an upward trend during this 30-year time span. 
 
  &nbsp;  
  
@@ -711,9 +711,9 @@ The test statistic obtained is greater than the `F critical` value = `r qf(0.975
 
 #### Net Reproduction Rate
 
-Null Hypothesis: The effect of female secondary school enrollment is not significantly related to net reproductive rate, adjusting for relative level of complex emergencies.
+Null Hypothesis: The effect of female secondary school enrollment is not significantly related to net reproduction rate, adjusting for relative level of complex emergencies.
 
-Alternative Hypothesis: The effect of female secondary school enrollment is significantly related to net reproductive rate, adjusting for relative level of complex emergencies.
+Alternative Hypothesis: The effect of female secondary school enrollment is significantly related to net reproduction rate, adjusting for relative level of complex emergencies.
 
 ```{r, anova nrr}
 # Null model
@@ -767,15 +767,15 @@ Complex emergencies such as natural disasters have been observed to affect socio
 
 ### Citations
 
-http://ghdx.healthdata.org/record/ihme-data/gbd-2019-fertility-estimates-1950-2019
+[Global Health Data](http://ghdx.healthdata.org/record/ihme-data/gbd-2019-fertility-estimates-1950-2019)
 
-https://www.who.int/environmental_health_emergencies/complex_emergencies/en/#:~:text=Complex%20emergencies%20are%20situations%20of,difficult%20political%20and%20security%20environment.
+[Index mundi](https://www.indexmundi.com/facts/indicators/SE.SEC.NENR.FE#:~:text=Indicators%20%3E%20Education%20%3E%20Participation-,School%20enrollment%2C%20secondary%2C%20female%20(%25%20net),the%20corresponding%20official%20school%20age)
 
-https://www.indexmundi.com/facts/indicators/SE.SEC.NENR.FE#:~:text=Indicators%20%3E%20Education%20%3E%20Participation-,School%20enrollment%2C%20secondary%2C%20female%20(%25%20net),the%20corresponding%20official%20school%20age.
+[Population Education](https://populationeducation.org/what-total-fertility-rate/)
 
-https://en.wikipedia.org/wiki/Net_reproduction_rate
+[UN Data](http://data.un.org/Glossary.aspx?q=Net+reproduction+rate+surviving+daughters+per+woman)
 
-https://populationeducation.org/what-total-fertility-rate/
+[WHO Complex Emergencies](https://www.who.int/environmental_health_emergencies/complex_emergencies/en/#:~:text=Complex%20emergencies%20are%20situations%20of,difficult%20political%20and%20security%20environment)
 
  &nbsp;  
  
