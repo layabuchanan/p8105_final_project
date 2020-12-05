@@ -17,3 +17,7 @@ Laya Buchanan (lmb2295, layabuchanan)
 ### Link to google doc
 
 https://docs.google.com/document/d/1TsZg_y9x_My37_ymFeFd503M_hOxy31z4h7TtKZkMCA/edit?usp=sharing
+
+### Link to older repo to see commit history
+
+https://github.com/nikhitadamaraju/p8105_final_project
