@@ -9,7 +9,7 @@ output:
 
 &nbsp;  
 
-On this page, you will find exploratory analyses of the predictors and outcomes for our linear models. Predictors described here include *Female Secondary School Enrollment Rates* and *Total Number of Complex Emergencies*. Outcomes include *Total Fertility Rates* and *Net Reproductive Rates*.
+On this page, you will find exploratory analyses of the predictors and outcomes for our linear models. Predictors described here include *Female Secondary School Enrollment Rates* and *Total Number of Complex Emergencies*. Outcomes include *Total Fertility Rates* and *Net Reproduction Rates*.
 
 ---------------------
 
@@ -80,14 +80,14 @@ fertility_nrr %>%
    layout(
     title = "Net Reproduction Rates Over Time - SE Asia",
     xaxis = list(title = "Year"),
-    yaxis = list(title = "Net Reproductive Rate (NRR)"),
+    yaxis = list(title = "Net Reproduction Rate (NRR)"),
     showlegend = TRUE, 
     legend = list(font = list(size = 10))
     )
 ```
-This plot illustrates changes in net reproductive rates in Southeast Asian countries, relative to global estimates, over time (1980 - 2010). 
+This plot illustrates changes in net reproduction rates in Southeast Asian countries, relative to global estimates, over time (1980 - 2010). 
 
-Within this time period, ASEAN net reproductive rates appeared to mirror global net reproduction rates and declined over time. Cambodia, Lao PDR, Philippines, and Myanmar maintained net reproduction rates that consistently exceeded global estimates. Conversely, Thailand and Singapore had net reproduction rates that were consistently below global estimates. 
+Within this time period, ASEAN net reproduction rates appeared to mirror global net reproduction rates and declined over time. Cambodia, Lao PDR, Philippines, and Myanmar maintained net reproduction rates that consistently exceeded global estimates. Conversely, Thailand and Singapore had net reproduction rates that were consistently below global estimates. 
 
 Net reproduction rates during this time span range from `r round(min(pull(fertility_nrr, val)),2)` daughters per woman to `r round(max(pull(fertility_nrr, val)),2)` daughters per woman. 
 
@@ -123,7 +123,7 @@ This plot illustrates changes in female secondary enrollment rates in Southeast 
 
 Enrollment rates appear to be consistently highest in Brunei, Phillipines, and Malaysia and consistently lowest in Myanmar, Lao PDR, and Cambodia. Most recently, in the year 2010, female enrollment rates appear to be highest in Brunei and lowest in Lao PDR. 
 
-Unlike total fertility rates and net reproductive rates over time, female secondary enrollment rates followed an upward trend during this 30-year time span
+Unlike total fertility rates and net reproduction rates over time, female secondary enrollment rates followed an upward trend during this 30-year time span
  
 
 &nbsp;  
