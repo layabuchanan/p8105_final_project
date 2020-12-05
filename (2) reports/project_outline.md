@@ -1,0 +1,134 @@
+Data Science Project Outline
+================
+
+### Group members
+
+Yaa Ababio (yoa2102, yababio)
+
+Kristina Howell (kdh2140, anamikadevi)
+
+Jyoti Kumar (jk4443, jk4443)
+
+Nikhita Damaraju (nd2674, nikhitadamaraju)
+
+Laya Buchanan (lmb2295, layabuchanan)
+
+#### Trends in Maternal Health Indicators Over Time in Southeast Asia Stratified by Complex Emergencies and Education
+
+### Research Questions
+
+  - How have total fertility rates changed over time by country in
+    Southeast Asia compared to the global rates?
+  - How do total fertility rates correlate to disease outbreaks, complex
+    emergencies, or education level?
+  - What are the spatial patterns identified by country over time (1980
+    – 2010)?
+
+### Motivation for this project
+
+Fertility rates are a direct indicator of population growth within a
+given country or region. The global total fertility rate has been
+steadily declining, and is projected to [drop to 1.66 by the
+year 2100](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736\(20\)30677-2/fulltext).
+Understanding how social and geopolitical events and natural disasters
+potentially impact fertility is critical in understanding how population
+demographics change.
+
+Fertility rates are a direct indicator of population growth within a
+given country or region. The global total fertility rate has been
+steadily declining, and is projected to [drop to 1.66 by the
+year 2100](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736\(20\)30677-2/fulltext).
+Understanding how social and geopolitical events as well as natural
+disasters potentially impact fertility is critical in understanding how
+population demographics change.
+
+In recent history, Southeast Asian countries have experienced a unique
+combination of complex emergencies, shifts in educational access, and
+disease outbreaks. This analysis aims to explore changes in fertility in
+Southeast Asian countries over time, in relation to the aforementioned
+crises and socioeconomic shifts.
+
+The following 10 countries were selected for analysis from the
+[Association of Southeast Asian Nations
+(ASEAN)](https://asean.org/asean/asean-member-states/): Brunei
+Darussalam, Cambodia, Indonesia, Laos, Malaysia, Myanmar, Philippines,
+Singapore, Thailand, and Vietnam.
+
+### Intended final products
+
+The intended final products of this project include a written report, a
+webpage overview, and an explanatory video.
+
+The structure of the **written report** will be as follows:
+
+  - Project motivation
+  - Related work
+  - Research questions
+  - Dataset information, variables, and cleaning
+  - Exploratory Data Analysis
+  - Formal Analysis
+  - Discussion
+
+The **webpage** will include our results, graphic outputs, process
+descriptions, and the written report.
+
+The **explanatory video** will be an informative screencast overview of
+the work that was conducted.
+
+### Anticipated data sources
+
+  - Maternal Health Data Source: [Global Burden of Disease Study 2019
+    (GBD 2019) Fertility
+    Estimates 1950-2019](http://ghdx.healthdata.org/record/ihme-data/gbd-2019-fertility-estimates-1950-2019)
+      - Fertility measures of interest: Total Fertility Rate, Net
+        Reproductive Rate and Crude Birth Rate
+      - Contains a separate csv file for each measure that includes a
+        location-wise estimate between 1950 - 2019
+  - Complex Emergency Data Source:
+    [Reliefweb](https://reliefweb.github.io/search-converter/?appname=rwint-user-0&search-url=https%3A%2F%2Freliefweb.int%2Fdisasters%3Fadvanced-search%3D%2528C120.C228.C251.C44.C48.C135.C147.C165.C188.C212%2529_%2528DA19800101-20101231%2529)
+      - Utilizes a JSON API for countries in the Southeast Asian Region
+        throughout 1980 - 2010
+  - Education Data Source: [World Bank
+    Data](https://data.worldbank.org/indicator/SE.SEC.ENRR)
+      - Secondary School Enrollment, females (% gross) 1970-2020
+
+### Planned analyses / visualizations / coding challenges
+
+The following analyses and visualizations are planned:
+
+  - Fertility rates vs time plots showing the rate of change of the
+    fertility rates over time for each country as well as globally. We
+    can use these plots to compare particular countries with each other
+    or even to compare global trends and particular countries to draw a
+    proper consensus.  
+  - A hover overlay of the south East Asian countries where when we
+    hover over a country, we can get the fertility rates, complex
+    emergencies and education levels of each country that we are
+    focusing on. This will further help us understand how fertility
+    rates correlate and affect complex emergencies, education levels and
+    disease outbreaks in these countries.
+
+A coding challenge we think we might come across could be integrating
+different datasets together because the “key” column to join them might
+not be the same, hence leading to difficulties in merging and joining
+the different datasets.
+
+### Planned timeline
+
+  - Nov 9 - 11: Meet to prepare for project review meeting, assign
+    deliverables to each group member
+
+  - Nov 13 - 20: Data tidying, exploratory analyses, including some
+    visualizations. Meet to decide on final visualizations and analyses
+    to include in final report
+
+  - Nov 20 - 27: Finish creating visualizations and any analyses, ensure
+    steps and decisions are adequately explained in .rmd file, meet to
+    review deliverables and to provide and receive feedback and
+    suggestions
+
+  - Nov 27 - Dec 4: Final edits to report incorporating suggestions from
+    group members, create webpage and screencast.
+
+  - Dec 4: Review all deliverables with group, make any final changes
+    and submit project
